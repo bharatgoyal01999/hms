@@ -1,42 +1,23 @@
+import 'react-native-gesture-handler'
 import React from 'react'
 import {View ,Text,Button, TouchableOpacity,StyleSheet} from 'react-native'
-import Head from './Head'
+import Home from './src/Home'
+import DocRegister from './src/Doctor/Regishetr'
+import DocLogin from './src/Doctor/Login'
+import {Scene, Router } from 'react-native-router-flux'
+
 export default class App extends React.Component{
   render(){
   return (
-    <View style={{flex:1, justifyContent:"center" ,backgroundColor:'#05022A',flexDirection:'row', alignItems:'center'}}>
-      <View>
-<TouchableOpacity style={styles.button} onPress={()=>{console.log("login As Doc")}}>
-  <Text numberOfLines={2} style={styles.buttonTxt}>Doctor Login</Text>
-</TouchableOpacity>
-      </View>
-<View>
-<TouchableOpacity style={styles.button}>
-  <Text style={styles.buttonTxt}>Patient Login</Text>
-</TouchableOpacity>
-</View>
-    </View>
-  );
-}}
+    <Router>
+      <Scene key="root">
+      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
+      <Scene key='DocReg' component={DocRegister} hideNavBar  />
+      <Scene key='DocLogin' component={DocLogin} hideNavBar />
+      </Scene>
+      </Router>
 
-const styles= StyleSheet.create({
-  button:{
-      backgroundColor:'#065D96',
-      margin:10,
-      elevation:5,
-      width:180,
-      height:100,
-      padding:5,
-      alignItems:'center',
-      justifyContent:'center',
-      borderRadius:50
+    )
 
-  },
-  buttonTxt:{
-    color:'white',
-    fontSize:25,
-    fontWeight:'bold'
-
-  }
-
-})
+}
+}
