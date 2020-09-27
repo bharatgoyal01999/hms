@@ -2,7 +2,7 @@ import React from 'react'
 import {View, AsyncStorage, ScrollView, TouchableOpacity} from 'react-native' ;
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
-
+import Colors from '../../Theme/Color'
 import Icon from 'react-native-vector-icons/Entypo';
 
 export default class Register extends React.Component{
@@ -22,7 +22,7 @@ export default class Register extends React.Component{
     render(){
     return (
     <View style={{flex:1}}>
-        <View style={{flex:0.18, backgroundColor:'#065D96',alignItems:'center'}}>
+        <View style={{flex:0.18, backgroundColor:Colors.backgroundBlue,alignItems:'center'}}>
             <Text h3 style={{color:'white'}} > Welcome Doctor</Text>
             <Text h4 style={{color:'white'}}>Please Register</Text>
         </View>
@@ -51,7 +51,7 @@ onChangeText={val=>this.setState({Speciality:val})}/>
   placeholder='Confirm Password' secureTextEntry={this.state.showPass} 
   onChangeText={val=>this.setState({ConfirmPass:val})}
   />
-<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:'#065D96', width:120,height:40}}  onPress={()=>{console.log('Register')}}>
+<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={()=>{console.log('Register')}}>
   <Text style={{color:'white'}} h4>Register</Text> 
   </TouchableOpacity>
 
