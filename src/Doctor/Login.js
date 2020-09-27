@@ -30,7 +30,7 @@ export default class LogIn extends React.Component{
             <Text h4 style={{color:'white'}}>Please Login</Text>
         </View>
         <View style={{flex:0.5}} />
-        <View style={{flex:0.35, backgroundColor:Colors.backgroundBlue,borderTopLeftRadius:150, borderTopRightRadius:150 }} />
+        <View style={{flex:0.35, backgroundColor:'#06314d',borderTopLeftRadius:150, borderTopRightRadius:150 }} />
        
         <Modal transparent visible={this.state.loginModal}>
         <View style={{width:300, alignSelf:'center', marginTop:270, elevation:5, borderRadius:20, paddingTop:20, height:300,backgroundColor:Colors.backgroundBlue}}>
