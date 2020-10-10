@@ -46,7 +46,10 @@ export default class LogIn extends React.Component{
 
 
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={()=>{console.log('Register')}}
-onPress={()=>{console.log("LOGIN")}}
+onPress={()=>{console.log("LOGIN");
+  this.setState({loginModal:false});
+  Actions.DocScreen()
+  }}
 >
   <Text style={{color:'white'}} h4>LogIn</Text> 
   </TouchableOpacity>
@@ -55,6 +58,7 @@ style={{alignSelf:'center', fontSize:20, color:'white', marginTop:20}}
 onPress={()=>{
     this.setState({loginModal:false})
     Actions.DocReg();
+
    
 
 }}

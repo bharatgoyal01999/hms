@@ -3,6 +3,8 @@ import {View, AsyncStorage, ScrollView, TouchableOpacity} from 'react-native' ;
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Colors from '../../Theme/Color'
+
+
 import Icon from 'react-native-vector-icons/Entypo';
 
 export default class Register extends React.Component{

@@ -4,7 +4,9 @@ import {View ,Text,Button, TouchableOpacity,StyleSheet} from 'react-native'
 import Home from './src/Home'
 import DocRegister from './src/Doctor/Regishetr'
 import DocLogin from './src/Doctor/Login'
+import DocScreen from './src/Doctor/DocScreen'
 import {Scene, Router } from 'react-native-router-flux'
+import Fit from './src/Users/Fitness'
 
 export default class App extends React.Component{
   render(){
@@ -14,8 +16,10 @@ export default class App extends React.Component{
       <Scene key='Home' component={Home} title='Home' initial hideNavBar />
       <Scene key='DocReg' component={DocRegister} hideNavBar  />
       <Scene key='DocLogin' component={DocLogin} hideNavBar />
+      <Scene key='DocScreen' component={DocScreen} hideNavBar />
       </Scene>
       </Router>
+   
 
     )
 
