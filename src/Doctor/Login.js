@@ -1,20 +1,39 @@
 import React from 'react'
-import {View, AsyncStorage, ScrollView, TouchableOpacity , Modal} from 'react-native' ;
+import {View, ScrollView, AsyncStorage,TouchableOpacity , Modal} from 'react-native' ;
+import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+
 import Colors from '../../Theme/Color'
+import * as firebase from 'firebase'
 export default class LogIn extends React.Component{
    constructor(props){
        super(props)
        this.state={
-        Phone:null,
+        Email:null,
         Password:null,
-        showPass:false,
+        showPass:true,
         loginModal:true
     
        }
-       Actions.refresh({})
+  
    }
+
+   handleLogin= async ()=>{
+  
+   await firebase.auth().signInWithEmailAndPassword(this.state.Email,this.state.Password)
+   .then(()=>{
+     const user=firebase.auth().currentUser;
+    console.log(user.uid)
+    if(user){
+      AsyncStorage.setItem("UID",user.uid)
+      this.setState({loginModal:false});
+      Actions.DocScreen()
+    }})
+   .catch((e)=>alert(e))
+    
+  
+    }
    
     componentDidMount=()=>{
         this.setState({loginModal:true})
@@ -34,7 +53,12 @@ export default class LogIn extends React.Component{
        
         <Modal transparent visible={this.state.loginModal}>
         <View style={{width:300, alignSelf:'center', marginTop:270, elevation:5, borderRadius:20, paddingTop:20, height:300,backgroundColor:Colors.backgroundBlue}}>
-<Input placeholder='Number' style={{alignItems:'center'}} onChangeText={val=>this.setState({Phone:val})} />
+<Input placeholder='Email' 
+style={{alignItems:'center'}} 
+onChangeText={val=>this.setState({Email:val})}
+ keyboardType={'email-address'} 
+ 
+ />
 
 
 
@@ -46,10 +70,7 @@ export default class LogIn extends React.Component{
 
 
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={()=>{console.log('Register')}}
-onPress={()=>{console.log("LOGIN");
-  this.setState({loginModal:false});
-  Actions.DocScreen()
-  }}
+onPress={this.handleLogin}
 >
   <Text style={{color:'white'}} h4>LogIn</Text> 
   </TouchableOpacity>

@@ -5,13 +5,13 @@ import Colors from '../../../Theme/Color'
 
 
 
-export default class DocHead extends React.Component{
+export default ({drName})=>{
 
-    render(){
+    
         return (
-            <View style={{flex:0.6, backgroundColor:Colors.backgroundBlue, alignItems:'center'}}>
-            <Text h3 style={{color:'white'}}>Hii (Doctor Name)</Text>
+            <View style={{flex:1, backgroundColor:Colors.backgroundBlue, alignItems:'center',justifyContent:'center'}}>
+            <Text h3 style={{color:'white'}}>{'Hii Dr. '+drName}</Text>
         </View>
         );
-    }
+    
 }
