@@ -3,6 +3,7 @@ import {View, ScrollView, AsyncStorage,TouchableOpacity , Modal} from 'react-nat
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
+import {handleLogin}  from '../backend/backend_handling'
 
 import Colors from '../../Theme/Color'
 import * as firebase from 'firebase'
@@ -19,7 +20,7 @@ export default class LogIn extends React.Component{
   
    }
 
-   handleLogin= async ()=>{
+   /*handleLogin= async ()=>{
   
    await firebase.auth().signInWithEmailAndPassword(this.state.Email,this.state.Password)
    .then(()=>{
@@ -33,7 +34,7 @@ export default class LogIn extends React.Component{
    .catch((e)=>alert(e))
     
   
-    }
+    }*/
    
     componentDidMount=()=>{
         this.setState({loginModal:true})
@@ -70,7 +71,9 @@ onChangeText={val=>this.setState({Email:val})}
 
 
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={()=>{console.log('Register')}}
-onPress={this.handleLogin}
+onPress={() => { const {Email,Password}=this.state; 
+handleLogin({Email,Password});
+this.setState({loginModal:false});}}
 >
   <Text style={{color:'white'}} h4>LogIn</Text> 
   </TouchableOpacity>
