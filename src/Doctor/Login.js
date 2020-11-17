@@ -1,5 +1,6 @@
 import React from 'react'
-import {View, ScrollView, AsyncStorage,TouchableOpacity , Modal} from 'react-native' ;
+import {View, ScrollView, TouchableOpacity , Modal} from 'react-native' ;
+import {AsyncStorage,} from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
