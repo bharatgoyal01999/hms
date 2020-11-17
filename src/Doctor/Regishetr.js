@@ -3,7 +3,9 @@ import {View, AsyncStorage, ScrollView, TouchableOpacity, ActivityIndicator} fro
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Colors from '../../Theme/Color'
-import * as firebase from 'firebase'
+import { firebase } from '@firebase/app';
+import '@firebase/auth';
+import {handleDocReg}  from '../backend/backend_handling'
 
 import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
@@ -25,7 +27,7 @@ export default class Register extends React.Component{
 
     }
 
-    handleDocReg= async ()=>{
+    /*handleDocReg= async ()=>{
     
       const Email=this.state.Email;
       const Pass=this.state.Password;
@@ -59,7 +61,7 @@ export default class Register extends React.Component{
       else{
         alert("Email and Password must be provide")
       }
-    }
+    }*/
 
    
     render(){
@@ -100,7 +102,10 @@ onChangeText={val=>this.setState({Speciality:val})}/>
   placeholder='Confirm Password' secureTextEntry={this.state.showPass} 
   onChangeText={val=>this.setState({ConfirmPass:val})}
   />
-<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={this.handleDocReg}>
+<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}} 
+ onPress={()=> { const {Email,Password,License,Speciality,Phone}=this.state; 
+  handleDocReg({Email,Password,License,Speciality,Phone});
+  this.setState({loading:false,display:'none'});}}>
   <Text style={{color:'white'}} h4>Register</Text> 
   </TouchableOpacity>
 
