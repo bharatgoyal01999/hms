@@ -15,7 +15,7 @@ export default class Home extends React.Component{
       </View>
 <View>
 <TouchableOpacity style={styles.button}>
-  <Text style={styles.buttonTxt} onPress={()=>Actions.Fitness()}>Patient Login</Text>
+  <Text style={styles.buttonTxt} onPress={()=>Actions.UserLogin()}>Patient Login</Text>
 </TouchableOpacity>
 </View>
     </View>

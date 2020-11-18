@@ -1,18 +1,18 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import auth from '@react-native-firebase/auth';
+import * as firebase from 'firebase';
 import { Alert } from 'react-native';
 
-registerDoctor = (email, password,name,lic,spec,phone) => {
-  if(email && password){
+export const registerDoctor = (email, Password,name,lic,spec,phone) => {
+  if(email && Password){
   
   firebase.auth()
-  .createUserWithEmailAndPassword(email, password)
+  .createUserWithEmailAndPassword(email, Password)
   .then(() => {
-    Alert.alert('User account created & signed in!');
+    alert('User account created & signed in!');
     const user = firebase.auth().currentUser
     if(user){
       AsyncStorage.setItem("UID",user.uid);
-      const path_ref=firebase.database.ref('/Doctor').child(user.uid).child('personalInfo')
+      const path_ref=firebase.database().ref('/Doctor').child(user.uid).child('personalInfo')
       const Personal_Info={
         Name:name,
         Email:email,
@@ -25,70 +25,79 @@ registerDoctor = (email, password,name,lic,spec,phone) => {
   })
   .catch(error => {
     if (error.code === 'auth/email-already-in-use') {
-      Alert.alert('That email address is already in use!');
+      alert('That email address is already in use!');
     }
 
     if (error.code === 'auth/invalid-email') {
-      Alert.alert('That email address is invalid!');
+      alert('That email address is invalid!');
     }
 
     console.error(error);
-    Alert.alert(error)
+    alert(error)
   });
   return user.name;
 }
   else{
-    Alert.alert('Enter details to signup!')
+    alert('Enter details to signup!')
   }
 }
 
 
-registerUser = (email, password,name,phone) => {
-  if(email && password){
+export const registerUser = (user_details) => {
+  console.log(user_details)
+  if(user_details.Email && user_details.Password){
   firebase
   .auth()
-    .createUserWithEmailAndPassword(email, password)
-    .then(() => {
-      Alert.alert('User account created & signed in!');
-      const user = firebase.auth().currentUser
+    .createUserWithEmailAndPassword(user_details.Email, user_details.Password)
+    .then( async () => {
+     
+      const user = await firebase.auth().currentUser;
+     console.log(firebase.auth().currentUser)
       if(user){
         AsyncStorage.setItem("UID",user.uid);
-        const path_ref=firebase.database.ref('/User').child(user.uid).child('personalInfo')
+        const path_ref=firebase.database().ref('/User').child(user.uid).child('personalInfo')
         const Personal_Info={
-          Name:name ,
-          Email:email,
-          Phone: phone,
+
+          Name:user_details.Name ,
+          Email:user_details.Email,
+          Phone: user_details.Phone,
+          Age:user_details.Age,
+          height:user_details.height,
+          weight:user_details.weight
+
         }
         path_ref.set(Personal_Info)
+        alert('User account created & signed in!');
+     
       }
     })
     .catch(error => {
       if (error.code === 'auth/email-already-in-use') {
-        Alert.alert('That email address is already in use!');
+        alert('That email address is already in use!');
       }
   
       if (error.code === 'auth/invalid-email') {
-        Alert.alert('That email address is invalid!');
+        alert('That email address is invalid!');
       }
   
       console.error(error);
-      Alert.alert(error)
+      alert(error)
     });
-    return user.name;
+   
   }
     else{
-      Alert.alert('Enter details to signup!')
+      alert('Enter details to signup!')
     }
   }
 
 
-  loginUser = (email, password) => {
-    if(email && password){
-    firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+  export const loginUser = (email, Password) => {
+    if(email && Password){
+    firebase.auth().signInWithEmailAndPassword(email, Password).catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
+      if (errorCode === 'auth/wrong-Password') {
+        alert('Wrong Password.');
       } else {
         alert(errorMessage);
       }
@@ -96,11 +105,11 @@ registerUser = (email, password,name,phone) => {
     });
   }
   else{
-    Alert.alert('Enter details to login!')
+    alert('Enter details to login!')
   }
 }
 
-logoutUser = () =>{
+export const logoutUser = () =>{
   firebase.auth().signOut()
   .then(() => {
   console.log('Signed Out');
