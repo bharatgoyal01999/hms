@@ -12,7 +12,7 @@ registerDoctor = (email, password,name,lic,spec,phone) => {
     const user = firebase.auth().currentUser
     if(user){
       AsyncStorage.setItem("UID",user.uid);
-      const path_ref=firebase.database.ref('/Doctor').child(user.uid).child('personalInfo')
+      const path_ref=firebase.database().ref('/Doctor').child(user.uid).child('personalInfo')
       const Personal_Info={
         Name:name,
         Email:email,
@@ -53,7 +53,7 @@ registerUser = (email, password,name,phone) => {
       const user = firebase.auth().currentUser
       if(user){
         AsyncStorage.setItem("UID",user.uid);
-        const path_ref=firebase.database.ref('/User').child(user.uid).child('personalInfo')
+        const path_ref=firebase.database().ref('/User').child(user.uid).child('personalInfo')
         const Personal_Info={
           Name:name ,
           Email:email,
