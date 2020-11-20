@@ -1,11 +1,11 @@
 import React from 'react'
 import {View, ScrollView, TouchableOpacity , Modal} from 'react-native' ;
-import {AsyncStorage,} from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {handleLogin}  from '../backend/backend_handling'
-
+import * as backend from '../backend/backend_handling'
 import Colors from '../../Theme/Color'
 import * as firebase from 'firebase'
 export default class LogIn extends React.Component{
@@ -71,10 +71,19 @@ onChangeText={val=>this.setState({Email:val})}
 
 
 
-<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={()=>{console.log('Register')}}
-onPress={() => { const {Email,Password}=this.state; 
-handleLogin({Email,Password});
-this.setState({loginModal:false});}}
+<TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}}  onPress={async ()=>{
+  console.log('Register')
+  var {Email,Password}=this.state
+
+  AsyncStorage.getItem("UID").then(val=>{
+  if(val){
+    this.setState({loginModal:false})
+    Actions.UserHome();
+  }
+})
+
+}}
+
 >
   <Text style={{color:'white'}} h4>LogIn</Text> 
   </TouchableOpacity>

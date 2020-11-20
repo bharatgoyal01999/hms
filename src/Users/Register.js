@@ -109,7 +109,14 @@ onChangeText={val=>this.setState({height:val})}/>
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}} 
  onPress={()=> { const {Email,Password,Age,height,weight,Phone,Name}=this.state; 
   backend.registerUser({Email,Password,Name,Age,weight,height,Phone});
-  this.setState({loading:false,display:'none'});}}>
+  this.setState({loading:false,display:'none'});
+  AsyncStorage.getItem("UID").then(val=>{
+    if(val){
+      this.setState({loginModal:false})
+      Actions.UserHome();
+    }
+  })
+  }}>
   <Text style={{color:'white'}} h4>Register</Text> 
   </TouchableOpacity>
 

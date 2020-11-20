@@ -9,7 +9,7 @@ import {Scene, Router } from 'react-native-router-flux'
 import FingerPrint from './src/Doctor/docScreenComp/FingerPrint'
 import  NewPatientReg from './src/Doctor/NewPatientRegistration'
 import Treatment from './src/Doctor/Treatment'
-import Fitness from './src/Users/Fitness'
+import UserHome from './src/Users/Home'
 import UserRegister from './src/Users/Register'
 import UserLogin from './src/Users/LoginIn'
 
@@ -19,7 +19,7 @@ import * as firebase from 'firebase'
 import Config from './config'
 import Axios from 'axios'
 
-// firebase.initializeApp(Config);
+firebase.initializeApp(Config);
 export default class App extends React.Component{
 
 
@@ -36,7 +36,7 @@ export default class App extends React.Component{
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='Fitness' component={Fitness} hideNavBar />
+      <Scene key='UserHome' component={UserHome} hideNavBar />
       <Scene key='UserReg' component={UserRegister} hideNavBar />
       <Scene key='UserLogin' component={UserLogin} hideNavBar />
       </Scene>

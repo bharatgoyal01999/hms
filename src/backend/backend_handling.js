@@ -91,9 +91,17 @@ export const registerUser = (user_details) => {
   }
 
 
-  export const loginUser = (email, Password) => {
+  export const loginUser =async (email, Password) => {
     if(email && Password){
-    firebase.auth().signInWithEmailAndPassword(email, Password).catch(function(error) {
+      var uid;
+   firebase.auth().signInWithEmailAndPassword(email, Password).then(res=>{
+     AsyncStorage.setItem('UID',res['uid'])
+     var path=firebase.database().ref('User/'+res['uid']+"/personalInfo")
+     path.on('value',data=>{
+       AsyncStorage.setItem('Profile',data.val())
+     })
+    })
+    .catch(function(error) {
       var errorCode = error.code;
       var errorMessage = error.message;
       if (errorCode === 'auth/wrong-Password') {
@@ -103,6 +111,7 @@ export const registerUser = (user_details) => {
       }
       console.log(error);
     });
+    AsyncStorage.getItem("UID").then(val=>console.log(val))
   }
   else{
     alert('Enter details to login!')
