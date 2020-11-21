@@ -13,6 +13,7 @@ import * as firebase from 'firebase'
 import * as backend from '../backend/backend_handling'
 import { heightPercentageToDP as hp ,widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
+import { Actions } from 'react-native-router-flux';
 export default class HeaderIconExample extends Component {
   state={
     display:'flex',
@@ -22,9 +23,12 @@ export default class HeaderIconExample extends Component {
     height:null,
     caloryNeededToBurn:null,
     caloryBuredToday:null,
-    PreviousRecord:{}
+    PreviousRecord:{},
+    ifLoginUser:false,
   }
   componentDidMount=async ()=>{
+    
+
     var UID;
    await AsyncStorage.getItem("UID").then(val=>{
       if(val){
@@ -64,8 +68,13 @@ export default class HeaderIconExample extends Component {
         <Text style={{fontSize:wp("5%")}}>Google-Fit</Text>
           </View>
          <ScrollView style={{flex:1}}>
-          <ActivityTile title={'Reminders'} Icon={<Micon name='alarm' color='#1285EA' size={wp("7%")} />}/>
-          <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")}/>} />
+          <ActivityTile title={'Medicine Reminders'} Icon={<Ficon name='pills' color='#1285EA' size={wp("7%")} />}
+             onTouch={()=>{Actions.Reminders()}}
+          />
+          <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")}/>}
+       
+          
+          />
           <ActivityTile title={'calories burn'} Icon={<Ficon name='fire' color={'#F52104'} size={wp("7%")}/>}/>
           <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>}/>
           <ActivityTile title={'sleep'} Icon={<Mcon name='sleep' color={'purple'} size={wp("7%")}/>}/>

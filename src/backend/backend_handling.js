@@ -1,15 +1,16 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import * as firebase from 'firebase';
 import { Alert } from 'react-native';
+import { Actions } from 'react-native-router-flux';
 
 export const registerDoctor = (email, Password,name,lic,spec,phone) => {
   if(email && Password){
   
   firebase.auth()
   .createUserWithEmailAndPassword(email, Password)
-  .then(() => {
-    alert('User account created & signed in!');
-    const user = firebase.auth().currentUser
+  .then(async () => {
+   
+    const user = await firebase.auth().currentUser
     if(user){
       AsyncStorage.setItem("UID",user.uid);
       const path_ref=firebase.database().ref('/Doctor').child(user.uid).child('personalInfo')
@@ -21,6 +22,8 @@ export const registerDoctor = (email, Password,name,lic,spec,phone) => {
         Phone: phone,
       }
       path_ref.set(Personal_Info)
+      alert('User account created & signed in!');
+      Actions.DocScreen()
     }
   })
   .catch(error => {
@@ -35,7 +38,7 @@ export const registerDoctor = (email, Password,name,lic,spec,phone) => {
     console.error(error);
     alert(error)
   });
-  return user.name;
+ 
 }
   else{
     alert('Enter details to signup!')

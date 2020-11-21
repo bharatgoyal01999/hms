@@ -9,6 +9,7 @@ import DatePicker from 'react-native-datepicker'
 import PatientCard from './docScreenComp/PatientCard'
 import FingerPrintScanner from './docScreenComp/FingerPrint'
 import { Actions } from 'react-native-router-flux'
+import { Input } from 'native-base'
 
 export default class DocScreen extends React.Component{
 
@@ -21,7 +22,9 @@ export default class DocScreen extends React.Component{
         time:'',
         visibleDate:'',
         DrName:'',
-        visibleFingerPrint:false
+        NewPatientAadharNumber:'',
+        visibleFingerPrint:false,
+        Uid:null
         
     }
     componentDidMount=async ()=>{
@@ -37,7 +40,7 @@ export default class DocScreen extends React.Component{
             this.setState({visibleDate})
             var Uid
            await AsyncStorage.getItem('UID').then(val=>{
-                
+                this.setState({Uid:val})
                 Uid=val
             })
             console.log(Uid)
@@ -51,6 +54,57 @@ export default class DocScreen extends React.Component{
             console.log(this.state.DrName)
            
         }
+
+    checkPatient=()=>{
+
+        const AadharNumber=this.state.NewPatientAadharNumber;
+        const PatientPath=firebase.database().ref('Patients').child(AadharNumber)
+        PatientPath.on('value',dataSnap=>{
+
+            if(dataSnap.val()){
+                console.log(AadharNumber)
+                console.log("Patient Exists")
+                this.setState({addPatientWindow:false})
+                Actions.Treatment({AadharNumber:AadharNumber});
+            }
+            else{
+                
+                console.log("New Patient")
+                this.setState({addPatientWindow:false})
+                Actions.NewPatient({AadharNumber:AadharNumber});
+            }
+        })
+
+
+        }
+    addPatient=()=>{
+
+        this.checkPatient();
+        // console.log(this.state.NewPatientAadharNumber)
+        // const today=new Date;
+        // var key;
+        // const date=today.getFullYear().toString()+today.getMonth().toString()+today.getDate().toString()
+        // console.log(date)
+
+        // const Doc_Patient_Path=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date)
+        // const push=Doc_Patient_Path.push();
+        // key=push.key
+        // Doc_Patient_Path.child(key).set(this.state.NewPatientAadharNumber)
+        // .catch(err=>alert(err))
+
+        // const Patient_path=firebase.database().ref('Patients').child(this.state.NewPatientAadharNumber).child(date)
+        // // Patient_path.set({
+        // //     Symtoms:'High Tempreature',
+        // //     TestAsked:'none',
+        // //     DoctorId:this.state.Uid,
+        // //     RelationKey:key
+        // // })
+        // firebase.database().ref('Patients').child(this.state.NewPatientAadharNumber).child(date).on('value',dataSnap=>{
+        //     console.log(dataSnap.val())
+        // })
+
+        // this.setState({NewPatientAadharNumber:null, addPatientWindow:false})
+    }
 
 
     render(){
@@ -104,16 +158,26 @@ export default class DocScreen extends React.Component{
                         justifyContent:'center',
                         alignItems:'center'
                         }}>
-                            <Text style={styles.UserText} onPress={()=>{this.setState({addPatientWindow:false,ifNew:true,visibleFingerPrint:true})}} > New Patient </Text>
-                            <Text style={styles.UserText} onPress={()=>{this.setState({visibleFingerPrint:true,addPatientWindow:false,ifNew:false})}}> Old Patient</Text>
-                    
+                            <Text style={{color:'white', fontSize:wp("5%")}} onPress={()=>{this.setState({addPatientWindow:false,ifNew:true,visibleFingerPrint:true})}} > Enter Aadhar Number </Text>
+                            <Input value={this.state.NewPatientAadharNumber} style={styles.UserText} keyboardType='number-pad' maxLength={12} onChangeText={(NewPatientAadharNumber)=>{this.setState({NewPatientAadharNumber})}}/> 
+                           <TouchableOpacity 
+                           style={{justifyContent:'center', 
+                           alignItems:'center',
+                            borderColor:'white',
+                            borderWidth:1, 
+                            width:wp("40%"),
+                            height:hp("5%"),
+                             marginBottom:hp("3%")}}
+                             onPress={this.addPatient}
+                             >
+                            <Text style={{color:'white', fontSize:wp("5%")}}>Ok</Text></TouchableOpacity>
                     </View>
                     </View>
                 </Modal>
 
-                <Modal visible={this.state.visibleFingerPrint} transparent onRequestClose={()=>{this.setState({visibleFingerPrint:false})}}> 
+                {/* <Modal visible={this.state.visibleFingerPrint} transparent onRequestClose={()=>{this.setState({visibleFingerPrint:false})}}> 
                 <FingerPrintScanner ifNew={this.state.ifNew} closeFingerPrintScanner={()=>{this.setState({visibleFingerPrint:false})}} />
-                </Modal>
+                </Modal> */}
              <View style={{
                
                 alignSelf:'flex-end',
@@ -145,7 +209,10 @@ const styles= StyleSheet.create({
   UserText:{
       color:'white',
       fontSize:wp("7%"),
-      marginVertical:hp("5%"),
+      width:wp("60%"),
+      height:hp("0%"),
+      marginVertical:hp("10%"),
+      alignSelf:'center',
       borderWidth:wp("0.5%"),
       borderColor:'white',
       borderRadius:wp("2%"),

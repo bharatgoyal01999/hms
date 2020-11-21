@@ -7,7 +7,7 @@ import * as firebase from 'firebase'
 import { Actions } from 'react-native-router-flux';
 // import {AsyncStorage} from '@react-native-community/async-storage'
 
-export default ()=>{
+export default ({AadharNumber})=>{
 var [name,setName]=useState("")
 var [dob,setDob]=useState("")
 var [Phone,setPhone]=useState("")
@@ -18,17 +18,19 @@ var [Email,setEmail]=useState('')
 const registerPatient= async()=>{
 var DocId;
 // await AsyncStorage.getItem('UID').then(val=>{DocId=val});
-const Path=firebase.database().ref('/Patient')
-const Push_Path=Path.push()
-const patient_key=(await Push_Path).key
-Path.child(patient_key).child("personalInfo").set({
+const Path=firebase.database().ref('/Patients')
+console.log("Inside the function")
+
+
+
+Path.child(AadharNumber).child("personalInfo").set({
     Name: name,
     DOB:dob,
     Gender:gender,
     Phone:Phone,
     Email:Email,
 
-}).then(()=>console.log("Data has been uploded"),Actions.Treatment())
+}).then(()=>console.log("Data has been uploded"),Actions.Treatment({AadharNumber:AadharNumber}))
 
 }
 return (
