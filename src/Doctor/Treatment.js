@@ -111,16 +111,16 @@ componentDidMount=async ()=>{
     }
 
 
-    uploadPriscription=()=>{
+    uploadPriscription=  async ()=>{
         const options = {
             title: 'Select Priscriptions',
-            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+          
             storageOptions: {
               skipBackup: true,
               path: 'images',
             },
           };
-        ImagePicker.launchCamera(options, (response) => {
+        ImagePicker.showImagePicker(options, async (response) => {
             // Same code as in above section!
             console.log('Response = ', response);
  
@@ -135,14 +135,44 @@ componentDidMount=async ()=>{
  
     // You can also display the image using data:
     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
- 
+
     this.setState({
       PriscriptionImage: source,
-      imagePreview:true,
+     });
+     const today=new Date;
+     var key;
+   
+     const date=today.getFullYear().toString()+(today.getMonth()+1).toString()+today.getDate().toString()
+     const  uri = this.state.PriscriptionImage.uri;
+     console.log(uri)
+    //  const filename = uri.substring(uri.lastIndexOf('/') + 1);
+    const res = await fetch(uri)
+    // console.log(res)
+    const blob=await res.blob();
+         var storageRef = firebase.storage().ref()
+         const finalref=storageRef.child('Priscription/'+date.toString()+this.props.AadharNumber.toString())
+    //      // Create file metadata including the content type
+        
+     var metadata = {
+     contentType: 'image/jpeg',
+     };
+     
+    finalref.put(blob, metadata).then(snapshot=>{
+        console.log(blob)
+         let upLodingRatio=snapshot.bytesTransferred/snapshot.totalBytes
+           console.log(upLodingRatio)
+        //  this.setState({upLodingRatio})
+ 
+     }).catch((err)=>{
+     console.log(err)
+     alert(err)
+     });
+   
 
-    });
   }
           });
+
+
     }
     
 addPatientInfo=()=>{
@@ -263,7 +293,7 @@ addPatientInfo=()=>{
                 height:heightPercentageToDP("60%")}} source={this.state.PriscriptionImage} resizeMode={'contain'} />
                 <Button color='#077A4B' title={'Done'} style={{marginTop:heightPercentageToDP("2%")}}  
                 onPress={()=>{
-                    
+
                     this.setState({imagePreview:false})
                 }}
                 />

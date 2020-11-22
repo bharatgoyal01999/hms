@@ -55,7 +55,7 @@ render(){
  <FlatList style={{flex:0.7}}
  data={this.state.Historydata}
  renderItem={({item})=>{
-     return (<PatientTile History={item}/>)
+     return (<PatientTile History={item}  AadharNumber={this.props.AadharNumber}/>)
  }}
  />}
 

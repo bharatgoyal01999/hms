@@ -154,7 +154,7 @@ console.log(this.state.patientAadharData)
 
                                     var TotalVisitesOfSinglePatient=Object.keys(datasnap.val())
                                         TotalVisitesOfSinglePatient.forEach(time=>{
-                                                data_of_patient.push({...datasnap.val()[time],...patientPersonalInfo,date:date_path,time:time})
+                                                data_of_patient.push({...datasnap.val()[time],...patientPersonalInfo,date:date_path,time:time,AadharNumber:item})
                                                 this.setState({patientData:data_of_patient})
                                         })
                             }
@@ -242,7 +242,7 @@ console.log(this.state.patientAadharData)
                 style={{flex:0.7}}
  data={this.state.patientData}
  renderItem={({item})=>{
-     return (<PatientTile History={item} keys={item.time} />)
+     return (<PatientTile History={item} keys={item.time} AadharNumber={item.AadharNumber} />)
  }}
  />
 

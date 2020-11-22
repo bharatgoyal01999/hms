@@ -6,11 +6,12 @@ import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-nat
 import * as firebase from 'firebase'
 
 
-const Priscriptions=({DrId,Notes})=>{
+const Priscriptions=({DrId,Notes,ImageSource})=>{
 console.log(Notes)
     var [DrName,setDrName]=useState("Doctor");
+    var [uri,setUrl]=useState()
 
-        useEffect( ()=>{
+        useEffect(  ()=>{
 
             const path=firebase.database().ref("Doctor").child(DrId).child('personalInfo')
              path.on('value',dataSnap=>{
@@ -21,7 +22,18 @@ console.log(Notes)
                     // console.log(dataSnap.val())
                 }
             })
-        })
+
+            // Create a reference to the file we want to download
+var starsRef = firebase.storage().ref().child('Priscription/'+ImageSource);
+
+// Get the download URL
+var url;
+ starsRef.getDownloadURL().then(function(url) {
+  setUrl(url)
+}).catch(function(error) {
+    console.log(error)
+}
+        )},[uri])
 
     return (
         <View style={{flex:1}}>
@@ -36,7 +48,7 @@ console.log(Notes)
     <Text style={{fontSize:wp("5%")}}>{'Notes:'+Notes}</Text>
     </ScrollView>
     
-                <Image resizeMode='contain' style={{borderColor:'#077ACA',borderWidth:1,width:wp("100%"),height:hp("70%")}} source={{uri:"https://english.mathrubhumi.com/polopoly_fs/1.4654409.1585537861!/image/image.jpg_gen/derivatives/landscape_728_450/image.jpg"}}/>
+                <Image resizeMode='contain' style={{borderColor:'#077ACA',borderWidth:1,width:wp("100%"),height:hp("70%")}} source={{uri:uri}}/>
                 
             </View>
         </View>
@@ -44,6 +56,7 @@ console.log(Notes)
 }
 export default (Info)=>{
     const data=Info.History
+    console.log(Info,"Infoo")
    
 var [priscriptionVisibility,setPriscriptionVisibility]=useState(false)
   
@@ -81,7 +94,7 @@ setPriscriptionVisibility(true)
     </View>
       
         <Modal visible={priscriptionVisibility} onRequestClose={()=>{setPriscriptionVisibility(false)}}>
-<Priscriptions DrId={data.DoctorId} Notes={data.Priscription}/>
+<Priscriptions DrId={data.DoctorId} Notes={data.Priscription} ImageSource={data.date+Info.AadharNumber}/>
         </Modal>
         </View>
     );
