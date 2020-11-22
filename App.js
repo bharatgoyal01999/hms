@@ -32,9 +32,9 @@ export default class App extends React.Component{
 
     <Router>
       <Scene key="root">
-      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
+      <Scene key='Home' component={Home} title='Home' hideNavBar />
       <Scene key='DocReg' component={DocRegister} hideNavBar  />
-      <Scene key='DocLogin' component={DocLogin} hideNavBar />
+      <Scene key='DocLogin' component={DocLogin} hideNavBar initial  />
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
