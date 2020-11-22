@@ -26,7 +26,7 @@ componentDidMount=async ()=>{
             dates.forEach((item)=>{
                const Times= Object.keys(data[item])
               Times.forEach((time)=>{
-                HistoryData.push({...data[item][time],date:item,time:time})
+                HistoryData.push({...data[item][time],date:item,time:time,Name:this.props.personalInfo.Name})
                 this.setState({Historydata:HistoryData, loading:false})
               })
               

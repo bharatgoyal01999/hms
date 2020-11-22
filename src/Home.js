@@ -15,7 +15,7 @@ export default class Home extends React.Component{
      if(user){
       var path=firebase.database().ref('User/'+user['uid']+"/personalInfo")
       path.on('value',data=>{
-        AsyncStorage.setItem("Profile",data.val())
+        // AsyncStorage.setItem("Profile",data.val())
       })
       this.setState({isUserLogin:true})
       AsyncStorage.setItem('UID',user.uid)

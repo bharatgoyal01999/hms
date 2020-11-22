@@ -27,7 +27,8 @@ export default class DocScreen extends React.Component{
         NewPatientAadharNumber:'',
         visibleFingerPrint:false,
         Uid:null,
-        patientData:[]
+        patientData:[],
+        patientAadharData:[],
     }
     componentDidMount=async ()=>{
 
@@ -48,6 +49,8 @@ export default class DocScreen extends React.Component{
                 Uid=val
             })
             console.log(Uid)
+        
+            
             const path=await firebase.database().ref('/Doctor').child(Uid).child('personalInfo')
             await path.on("value",(dataSnap)=>{
                 if(dataSnap.val()){
@@ -55,9 +58,30 @@ export default class DocScreen extends React.Component{
                   }
 
             })
+            var date_path=date.split('-').join('')
+            const path_=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date_path);
+       
+            var PatientsAadharList=[];
+            await path_.on('value',dataSnap=>{
+
+                if(dataSnap.val()){
+                    console.log(dataSnap.val())
+                    this.setState({patientAadharData:Object.values(dataSnap.val())})
+                   
+                       
+
+                }
+                else{
+                    console.log("HMmm")
+                }
+            })
+console.log(this.state.patientAadharData)
+            setTimeout(()=>{
+                this.getDataForSelectedDate(date)
+            },2000)
             console.log(this.state.DrName);
 
-            this.getDataForSelectedDate(this.state.selectedDate)
+            
 
 
 
@@ -89,54 +113,56 @@ export default class DocScreen extends React.Component{
 
 
     getDataForSelectedDate=async (date)=>{
-        console.log("Indie")
-            var date_path=date.split('-').join('')
-
+      var date_path=date.split('-').join('')
+       
 // Getting patient list
-
-            const path=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date_path);
-
-            var PatientsAadharList=[];
-            await path.on('value',dataSnap=>{
-
-                if(dataSnap.val()){
-
-                        PatientsAadharList=Object.values(dataSnap.val())
-
-                }
-                else{
-                    console.log("HMmm")
-                }
-            })
-
+// var UID;
+//  await AsyncStorage.getItem('UID').then(val=>{
+                
+//                 UID=val
+//             })
+           
             // Getting Patient Data
+            
+            var updatesAadharList={}
+           
+            this.state.patientAadharData.forEach(item=>updatesAadharList[item]=1)
+            // console.log(updatesAadharList)
+            updatesAadharList=Object.keys(updatesAadharList)
+          
+            PatientsAadharList=updatesAadharList
+            // console.log(PatientsAadharList)
+            
             var data_of_patient=[]
-            PatientsAadharList.forEach(item=>{
+            
+            PatientsAadharList.forEach(async item=>{
+
                 var patientPersonalInfo={}
+
                     const path=firebase.database().ref('Patients').child(item+'/History').child(date_path)
                     const Prsonal_Info_Path=firebase.database().ref('Patients').child(item+'/personalInfo')
 
-Prsonal_Info_Path.on('value',dataSnap=>{
-    if(dataSnap.val()){
-        patientPersonalInfo=dataSnap.val()
-    }
-})
+       await Prsonal_Info_Path.on('value',dataSnap=>{
+        if(dataSnap.val()){
+             patientPersonalInfo=dataSnap.val()
+                                                    }
+                            })
 
-                    path.on('value',datasnap=>{
+                   await path.on('value',datasnap=>{
 
                             if(datasnap.val()){
 
                                     var TotalVisitesOfSinglePatient=Object.keys(datasnap.val())
                                         TotalVisitesOfSinglePatient.forEach(time=>{
-                                            
-                                                // data_of_patient.push(datasnap.val().time)
                                                 data_of_patient.push({...datasnap.val()[time],...patientPersonalInfo,date:date_path,time:time})
+                                                this.setState({patientData:data_of_patient})
                                         })
                             }
 
                     })
             })
-            this.setState({patientData:data_of_patient})
+
+         
 
 
 
@@ -150,8 +176,9 @@ Prsonal_Info_Path.on('value',dataSnap=>{
 
 
     render(){
-     
+     console.log(this.state.patientData,",,,,")
         return (
+
 
             <View style={{flex:1}}>
 
@@ -180,9 +207,28 @@ Prsonal_Info_Path.on('value',dataSnap=>{
               display:'none'}
          }}
 
-         onDateChange={(date) => {
+         onDateChange={async (date) => {
 
            this.setState({selectedDate:date})
+           var date_path=date.split('-').join('')
+           const path_=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date_path);
+      
+           var PatientsAadharList=[];
+           await path_.on('value',dataSnap=>{
+
+               if(dataSnap.val()){
+                   console.log(dataSnap.val())
+                   this.setState({patientAadharData:Object.values(dataSnap.val())})
+                  
+                      
+
+               }
+               else{
+                   console.log("HMmm")
+               }
+           })
+console.log(this.state.patientAadharData)
+
            
             this.getDataForSelectedDate(date)
 
@@ -191,10 +237,12 @@ Prsonal_Info_Path.on('value',dataSnap=>{
        /></View>
                 </View>
        
-                <FlatList style={{flex:0.7}}
+                <FlatList
+                inverted
+                style={{flex:0.7}}
  data={this.state.patientData}
  renderItem={({item})=>{
-     return (<PatientTile History={item}/>)
+     return (<PatientTile History={item} keys={item.time} />)
  }}
  />
 

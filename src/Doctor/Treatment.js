@@ -1,5 +1,5 @@
 import React ,{useState,useEffect}  from 'react';
-import {View,ScrollView,TouchableOpacity, Modal} from 'react-native'
+import {View,ScrollView,TouchableOpacity, Modal,Image,Button} from 'react-native'
 import Colors from  '../../Theme/Color'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
@@ -11,6 +11,7 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
 import PatientHistory from './PatientHistory'
+import ImagePicker from 'react-native-image-picker'
 
 
 const PatientBasicInfo=(Info)=>{
@@ -74,6 +75,9 @@ export default class Treatment extends React.Component {
         personalInfo:{},
         Uid:'',
         historyModal:false,
+        PriscriptionImage:null,
+        imagePreview:false
+        
     }
 
 componentDidMount=async ()=>{
@@ -104,6 +108,41 @@ componentDidMount=async ()=>{
         setTimeout(()=>{
             this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
         },2000)
+    }
+
+
+    uploadPriscription=()=>{
+        const options = {
+            title: 'Select Priscriptions',
+            customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
+            storageOptions: {
+              skipBackup: true,
+              path: 'images',
+            },
+          };
+        ImagePicker.launchCamera(options, (response) => {
+            // Same code as in above section!
+            console.log('Response = ', response);
+ 
+  if (response.didCancel) {
+    console.log('User cancelled image picker');
+  } else if (response.error) {
+    console.log('ImagePicker Error: ', response.error);
+  } else if (response.customButton) {
+    console.log('User tapped custom button: ', response.customButton);
+  } else {
+    const source = { uri: response.uri };
+ 
+    // You can also display the image using data:
+    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+ 
+    this.setState({
+      PriscriptionImage: source,
+      imagePreview:true,
+
+    });
+  }
+          });
     }
     
 addPatientInfo=()=>{
@@ -181,7 +220,21 @@ addPatientInfo=()=>{
           </Form>
 
             </Form>  
-
+            <TouchableOpacity 
+            style={{flexDirection:'row',
+            marginBottom:heightPercentageToDP("3%"),
+            marginTop:heightPercentageToDP("3%"),
+            alignItems:'center',
+            justifyContent:'center',
+            borderWidth:1,
+            borderColor:'#077A4B',
+            marginHorizontal:widthPercentageToDP("2%")
+            }}
+            onPress={this.uploadPriscription}
+            >
+            <Ficon name='camera' color={'#077A4B'} size={widthPercentageToDP("8%")} />
+                <Text style={{fontSize:widthPercentageToDP("6%")}}>Upload  Priscriptions</Text>
+        </TouchableOpacity>
                 </View>
                 <TouchableOpacity  
                     
@@ -192,6 +245,28 @@ addPatientInfo=()=>{
 
             <Modal visible={this.state.historyModal} onRequestClose={()=>this.setState({historyModal:false})} animationType='slide' >
 <PatientHistory AadharNumber={this.props.AadharNumber} personalInfo={this.state.personalInfo}/>
+            </Modal>
+
+            <Modal visible={this.state.imagePreview}>
+{/* <View></View */}
+
+    <View
+     style={{flex:0.15,
+    alignItems:'center',
+    justifyContent:'space-evenly',
+    backgroundColor:'#077A4B'
+    }}>
+    <Text style={{color:'white', fontSize:widthPercentageToDP("5%")}}>Preview</Text></View>
+   
+            <Image style={{flex:0.7,
+            width:widthPercentageToDP("100%"),
+                height:heightPercentageToDP("60%")}} source={this.state.PriscriptionImage} resizeMode={'contain'} />
+                <Button color='#077A4B' title={'Done'} style={{marginTop:heightPercentageToDP("2%")}}  
+                onPress={()=>{
+                    
+                    this.setState({imagePreview:false})
+                }}
+                />
             </Modal>
 
         </ScrollView>

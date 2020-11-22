@@ -44,26 +44,28 @@ console.log(Notes)
 }
 export default (Info)=>{
     const data=Info.History
-    console.log(data,",,,")
+   
 var [priscriptionVisibility,setPriscriptionVisibility]=useState(false)
   
     return (
         <View 
         
-        style={{height:hp('18%'),
+        style={{height:hp('24%'),
 
-        padding:wp("2%"),
+       padding:wp('4%'),
         margin:wp("2%"),
-        borderRadius:wp("3%"), 
+        
         flexDirection:'row',
-        elevation:wp("1%"),
+        elevation:1,
+        borderRadius:wp("3%"),
         alignItems:'center'}}
         
         
         >
 
-        <View style={{flexDirection:'row', flex:1,justifyContent:'space-between'}}>
+        {/* <View style={{flexDirection:'row',  padding:wp("2%"), borderRadius:wp("3%"),flex:1,justifyContent:'space-between'}}> */}
             <ScrollView>
+               <Text  style={styles.DiscriptionText}>{"Name-" +data.Name}</Text>
     <Text  style={styles.DiscriptionText}>{"Problem-" +data.Symtoms}</Text>
     <Text style={styles.DiscriptionText}>{"Tempreature-" +data.Temp}</Text>
     <Text style={styles.DiscriptionText}>{"HeartRate-" +data.HeartRate}</Text>
@@ -77,7 +79,7 @@ var [priscriptionVisibility,setPriscriptionVisibility]=useState(false)
 setPriscriptionVisibility(true)
     }} />
     </View>
-        </View>
+      
         <Modal visible={priscriptionVisibility} onRequestClose={()=>{setPriscriptionVisibility(false)}}>
 <Priscriptions DrId={data.DoctorId} Notes={data.Priscription}/>
         </Modal>
