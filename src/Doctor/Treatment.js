@@ -6,6 +6,7 @@ import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
 import {Text} from 'react-native-elements'
 import { Container, Header, Content, Form, Item, Input, Label , Textarea} from 'native-base';
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
+import BandData from './bmodules';
 
 
 const PatientBasicInfo=()=>{
@@ -42,9 +43,21 @@ export default class Treatment extends React.Component {
     syncWithBand=()=>{
         console.log("Start")
         this.setState({loding:true})
-        setTimeout(()=>{
-            this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
-        },2000)
+
+            try {
+              var {
+                HeartRate
+              } = await BandData.measure();
+          
+              console.log(HeartRate);
+            } catch (e) {
+              console.error(e);
+            }
+          
+        
+        //setTimeout(()=>{
+          //  this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
+        //},2000)
     }
     render(){
     return (
