@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input ,Text, Button} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import {handleLogin}  from '../backend/backend_handling'
+import {widthPercentageToDP as wp ,heightPercentageToDP as hp} from 'react-native-responsive-screen'
 
 import Colors from '../../Theme/Color'
 import * as firebase from 'firebase'
@@ -54,8 +55,11 @@ export default class LogIn extends React.Component{
         <View style={{flex:0.35, backgroundColor:'#06314d',borderTopLeftRadius:150, borderTopRightRadius:150 }} />
        
         <Modal transparent visible={this.state.loginModal}>
-        <ScrollView style={{width:300, alignSelf:'center', marginTop:270, elevation:5, borderRadius:20, paddingTop:20, height:300,backgroundColor:Colors.backgroundBlue}}>
+     
+        <View style={{width:wp("70%"), alignSelf:'center', marginTop:hp("40%"), elevation:5, borderRadius:wp("5%"), paddingTop:hp("2%"), height:hp("40%"),backgroundColor:Colors.backgroundBlue,position:'relative'}}>
+          <ScrollView>
 <Input placeholder='Email' 
+color={'white'}
 style={{alignItems:'center'}} 
 onChangeText={val=>this.setState({Email:val})}
  keyboardType={'email-address'} 
@@ -65,7 +69,7 @@ onChangeText={val=>this.setState({Email:val})}
 
 
  <Input
-  placeholder='Password' secureTextEntry={this.state.showPass}
+  placeholder='Password' secureTextEntry={this.state.showPass} color={'white'}
   onChangeText={val=>this.setState({Password:val})}
   />
 
@@ -89,7 +93,8 @@ onPress={()=>{
 }}
 
 > Create new account!! </Text>
- </ScrollView>
+</ScrollView>
+ </View>
  </Modal>
     </View>
 

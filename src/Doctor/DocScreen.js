@@ -1,5 +1,5 @@
 import React from 'react'
-import {View, Text, Button, Modal ,TouchableOpacity,StyleSheet,AsyncStorage} from 'react-native'
+import {View, Text, Button, Modal, FlatList,TouchableOpacity,StyleSheet,AsyncStorage} from 'react-native'
 import Head from './docScreenComp/Head'
 import Colors from '../../Theme/Color'
 import * as firebase from 'firebase'
@@ -7,6 +7,8 @@ import {heightPercentageToDP as hp , widthPercentageToDP as wp} from 'react-nati
 import Icons from 'react-native-vector-icons/AntDesign'
 import DatePicker from 'react-native-datepicker'
 import PatientCard from './docScreenComp/PatientCard'
+import PatientTile from './PatientTile'
+
 import FingerPrintScanner from './docScreenComp/FingerPrint'
 import { Actions } from 'react-native-router-flux'
 import { Input } from 'native-base'
@@ -24,15 +26,17 @@ export default class DocScreen extends React.Component{
         DrName:'',
         NewPatientAadharNumber:'',
         visibleFingerPrint:false,
-        Uid:null
-        
+        Uid:null,
+        patientData:[]
     }
     componentDidMount=async ()=>{
 
             var dateTime=await new Date();
             const date=dateTime.toISOString().split("T")[0];
+           
             const time=dateTime.getHours()+":"+dateTime.getMinutes()+":"+dateTime.getSeconds();
             this.setState({today:date,time:time,selectedDate:date})
+
             let visibleDate=date;
             visibleDate=date.split("-");
             visibleDate= visibleDate.reverse()
@@ -51,7 +55,12 @@ export default class DocScreen extends React.Component{
                   }
 
             })
-            console.log(this.state.DrName)
+            console.log(this.state.DrName);
+
+            this.getDataForSelectedDate(this.state.selectedDate)
+
+
+
            
         }
 
@@ -77,33 +86,66 @@ export default class DocScreen extends React.Component{
 
 
         }
+
+
+    getDataForSelectedDate=async (date)=>{
+        console.log("Indie")
+            var date_path=date.split('-').join('')
+
+// Getting patient list
+
+            const path=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date_path);
+
+            var PatientsAadharList=[];
+            await path.on('value',dataSnap=>{
+
+                if(dataSnap.val()){
+
+                        PatientsAadharList=Object.values(dataSnap.val())
+
+                }
+                else{
+                    console.log("HMmm")
+                }
+            })
+
+            // Getting Patient Data
+            var data_of_patient=[]
+            PatientsAadharList.forEach(item=>{
+                var patientPersonalInfo={}
+                    const path=firebase.database().ref('Patients').child(item+'/History').child(date_path)
+                    const Prsonal_Info_Path=firebase.database().ref('Patients').child(item+'/personalInfo')
+
+Prsonal_Info_Path.on('value',dataSnap=>{
+    if(dataSnap.val()){
+        patientPersonalInfo=dataSnap.val()
+    }
+})
+
+                    path.on('value',datasnap=>{
+
+                            if(datasnap.val()){
+
+                                    var TotalVisitesOfSinglePatient=Object.keys(datasnap.val())
+                                        TotalVisitesOfSinglePatient.forEach(time=>{
+                                            
+                                                // data_of_patient.push(datasnap.val().time)
+                                                data_of_patient.push({...datasnap.val()[time],...patientPersonalInfo,date:date_path,time:time})
+                                        })
+                            }
+
+                    })
+            })
+            this.setState({patientData:data_of_patient})
+
+
+
+    }
     addPatient=()=>{
 
         this.checkPatient();
-        // console.log(this.state.NewPatientAadharNumber)
-        // const today=new Date;
-        // var key;
-        // const date=today.getFullYear().toString()+today.getMonth().toString()+today.getDate().toString()
-        // console.log(date)
-
-        // const Doc_Patient_Path=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date)
-        // const push=Doc_Patient_Path.push();
-        // key=push.key
-        // Doc_Patient_Path.child(key).set(this.state.NewPatientAadharNumber)
-        // .catch(err=>alert(err))
-
-        // const Patient_path=firebase.database().ref('Patients').child(this.state.NewPatientAadharNumber).child(date)
-        // // Patient_path.set({
-        // //     Symtoms:'High Tempreature',
-        // //     TestAsked:'none',
-        // //     DoctorId:this.state.Uid,
-        // //     RelationKey:key
-        // // })
-        // firebase.database().ref('Patients').child(this.state.NewPatientAadharNumber).child(date).on('value',dataSnap=>{
-        //     console.log(dataSnap.val())
-        // })
-
-        // this.setState({NewPatientAadharNumber:null, addPatientWindow:false})
+       
+        
     }
 
 
@@ -137,14 +179,24 @@ export default class DocScreen extends React.Component{
                 dateInput:{
               display:'none'}
          }}
+
          onDateChange={(date) => {
 
            this.setState({selectedDate:date})
+           
+            this.getDataForSelectedDate(date)
+
+
          }}
        /></View>
                 </View>
        
-        {/* <PatientCard /> */}
+                <FlatList style={{flex:0.7}}
+ data={this.state.patientData}
+ renderItem={({item})=>{
+     return (<PatientTile History={item}/>)
+ }}
+ />
 
             </View>
 
@@ -220,6 +272,7 @@ const styles= StyleSheet.create({
   }  ,
   flotingButton:{
     alignItems:'center',
+   
     justifyContent:'center',
     backgroundColor:Colors.backgroundBlue,
     height:hp("9%"), 

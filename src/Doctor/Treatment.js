@@ -89,11 +89,12 @@ componentDidMount=async ()=>{
     var year=new Date;
     year=year.getFullYear()
     var Age= year-Number(this.state.personalInfo['DOB'].slice(0,4))
-    console.log(Age)
+  
+
     var personalInfo=this.state.personalInfo
     personalInfo.Age=Age
     this.setState({personalInfo:personalInfo})
-    console.log(this.state.personalInfo)
+  
 
 }
 
@@ -109,10 +110,10 @@ addPatientInfo=()=>{
       
         const today=new Date;
         var key;
-        const date=today.getFullYear().toString()+today.getMonth().toString()+today.getDate().toString()
+      
+        const date=today.getFullYear().toString()+(today.getMonth()+1).toString()+today.getDate().toString()
         const time=today.getHours().toString()+today.getMinutes().toString()
-        console.log(time)
-        console.log(date)
+       console.log(date)
 
         const Doc_Patient_Path=firebase.database().ref('Doctor').child(this.state.Uid).child('PatientInfo').child(date)
         const push=Doc_Patient_Path.push();

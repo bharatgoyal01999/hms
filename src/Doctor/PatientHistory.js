@@ -13,6 +13,7 @@ state={
 
     Historydata:[],
     loading:true,
+    onlyMyCases:false
 }
 componentDidMount=async ()=>{
 
@@ -49,9 +50,7 @@ render(){
                 alignItems:'center',justifyContent:'center',backgroundColor:Color.backgroundBlue}}>
     <Text style={{fontSize:widthPercentageToDP("7%"), color:'white'}}>{this.props.personalInfo.Name.split(' ')[0]+"'s Medical History"}</Text>
             </View>
-            <View style={{flexDirection:'row',flex:0.15}}>
-                    
-            </View>
+           
     {  this.state.loading ? <ActivityIndicator color={'blue'} size={9} /> : 
  <FlatList style={{flex:0.7}}
  data={this.state.Historydata}
