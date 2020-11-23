@@ -62,6 +62,9 @@ android {
         targetSdkVersion targetSdkVersion
         versionCode 7
         versionName "1.0"
+
+
+        
     ndk {
         moduleName "libnative_lib"
         //include Android log, in c/c++ cource file has been used#include <android/log.h>
