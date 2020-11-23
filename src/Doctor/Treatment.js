@@ -13,6 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import PatientHistory from './PatientHistory'
 import ImagePicker from 'react-native-image-picker'
 
+import BandData from './bmodules';
 
 const PatientBasicInfo=(Info)=>{
 
@@ -105,9 +106,21 @@ componentDidMount=async ()=>{
     syncWithBand=()=>{
         console.log("Start")
         this.setState({loding:true})
-        setTimeout(()=>{
-            this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
-        },2000)
+
+            try {
+              var {
+                HeartRate
+              } = await BandData.measure();
+          
+              console.log(HeartRate);
+            } catch (e) {
+              console.error(e);
+            }
+          
+        
+        //setTimeout(()=>{
+          //  this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
+        //},2000)
     }
 
 
