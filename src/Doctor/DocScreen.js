@@ -238,7 +238,7 @@ console.log(this.state.patientAadharData)
                 </View>
        
                 <FlatList
-                inverted
+            
                 style={{flex:0.7}}
  data={this.state.patientData}
  renderItem={({item})=>{

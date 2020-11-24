@@ -60,7 +60,7 @@ android {
         applicationId "com.hms"
         minSdkVersion 18
         targetSdkVersion targetSdkVersion
-        versionCode 7
+        versionCode 8
         versionName "1.0"
 
 

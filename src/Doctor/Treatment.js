@@ -13,12 +13,12 @@ import { Actions } from 'react-native-router-flux';
 import PatientHistory from './PatientHistory'
 import ImagePicker from 'react-native-image-picker'
 
-import BandData from './bmodules';
+import {NativeModules} from 'react-native';
+
 
 const PatientBasicInfo=(Info)=>{
 
    
-
 
     // const path_patient_info=firebase.database().ref('Patients')
     // path_patient_info.on('value', datasnap=>{
@@ -81,7 +81,26 @@ export default class Treatment extends React.Component {
         
     }
 
+    sayHiFromJava=async()=> {
+    //   console.log(NativeModules)
+    //   console.log(NativeModules.FitBand)
+      var FitBand = NativeModules.FitBand;
+try{
+      FitBand.StartLiveScanning((err)=>console.log(err),(data)=>{alert("data:",data)}, (hashmap)=>{alert("hashMap:",hashmap)})}
+catch(err){
+    alert(err)
+}
+    //   FitBand.InitialY((err) => {console.log(err)}, (msg) => {console.log(msg)})
+    }
+
+
 componentDidMount=async ()=>{
+
+    var FitBand = NativeModules.FitBand;
+    FitBand.sayHi( (err) => {console.log(err)}, (msg) => {alert("Successfully Initialize")} );
+    FitBand.CheckConnectionState((err) => {console.log(err)}, (msg) => {alert(msg)})
+
+
     await AsyncStorage.getItem("UID").then(val=>this.setState({Uid:val}))
     const AadharNumber=this.props.AadharNumber;
     const path_patient_info=firebase.database().ref('Patients').child(AadharNumber).child('personalInfo')
@@ -104,18 +123,19 @@ componentDidMount=async ()=>{
 }
 
     syncWithBand=()=>{
-        console.log("Start")
-        this.setState({loding:true})
+        // console.log("Start")
+        // this.setState({loding:true})
 
-            try {
-              var {
-                HeartRate
-              } = await BandData.measure();
+        //     try {
+        //       var {
+        //         HeartRate
+        //       } = await BandData.measure();
           
-              console.log(HeartRate);
-            } catch (e) {
-              console.error(e);
-            }
+        //       console.log(HeartRate);
+        //     } catch (e) {
+        //       console.error(e);
+        //     }
+        this.sayHiFromJava();
           
         
         //setTimeout(()=>{
