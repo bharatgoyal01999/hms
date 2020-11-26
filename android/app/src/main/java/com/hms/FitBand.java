@@ -45,6 +45,19 @@ public class FitBand extends ReactContextBaseJavaModule {
         try {
             System.out.println("Greetings from Java");
             YCBTClient.initClient(this.reactContext,true);
+            YCBTClient.connectBle("FC:E4:21:37:8B:54", new BleConnectResponse(){
+                @Override
+                    public void onConnectResponse(int code) {
+
+                        //Log.e("connectBle code " + code);
+                        if (code == Constants.CODE.Code_OK){
+
+                        }
+                        else if (code == Constants.CODE.Code_Failed){
+
+                        }
+                    }
+            });
             successCallback.invoke("YCBTClient");
         } catch (IllegalViewOperationException e) {
             errorCallback.invoke(e.getMessage());
@@ -76,16 +89,22 @@ public class FitBand extends ReactContextBaseJavaModule {
        AITools aiTools = new AITools();
                 aiTools.Init();
 
-                YCBTClient.appEcgTestStart(new BleDataResponse() {
+                YCBTClient.healthHistoryData( 0506, new BleDataResponse() {
                     @Override
-                    public void onDataResponse(int code, float ratio, HashMap resultMap) {
-                                ondataresponse.invoke(code);
-                    }
-                }, new BleRealDataResponse() {
-                    @Override
-                    public void onRealDataResponse(int dataType, HashMap dataMap) {
-                            hashMap.invoke(dataMap);
-                    }
+                    public void onDataResponse(int code, float value, HashMap resultMap) {
+                        if (code == Constants.CODE.Code_OK){
+
+                        
+                           // if (data == Constants.DATATYPE.HR){
+                            resultMap.put("Heart Rate", value);
+                            //if (data == Constants.DATATYPE.BP){resultMap.put("BP", value);}
+                            //if (data == Constants.DATATYPE.Temp){resultMap.put("Temperature", value);}
+                            hashMap.invoke(resultMap);
+                        }
+                        else if (code == Constants.CODE.Code_Failed){
+                            errorCallback.invoke("sync failed");
+                        }
+                    }   
                 });
 
 }}

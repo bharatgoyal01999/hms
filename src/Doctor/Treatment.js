@@ -81,18 +81,6 @@ export default class Treatment extends React.Component {
         
     }
 
-    sayHiFromJava=async()=> {
-    //   console.log(NativeModules)
-    //   console.log(NativeModules.FitBand)
-      var FitBand = NativeModules.FitBand;
-try{
-      FitBand.StartLiveScanning((err)=>console.log(err),(data)=>{alert("data:",data)}, (hashmap)=>{alert("hashMap:",hashmap)})}
-catch(err){
-    alert(err)
-}
-    //   FitBand.InitialY((err) => {console.log(err)}, (msg) => {console.log(msg)})
-    }
-
 
 componentDidMount=async ()=>{
 
@@ -121,6 +109,18 @@ componentDidMount=async ()=>{
   
 
 }
+
+sayHiFromJava=async()=> {
+    //   console.log(NativeModules)
+    //   console.log(NativeModules.FitBand)
+      var FitBand = NativeModules.FitBand;
+try{
+      FitBand.StartLiveScanning((err)=>console.log(err),(data)=>{alert("data:",data)}, (hashmap)=>{console.log(hashmap)})}
+catch(err){
+    alert(err)
+}
+    //   FitBand.InitialY((err) => {console.log(err)}, (msg) => {console.log(msg)})
+    }
 
     syncWithBand=()=>{
         // console.log("Start")
