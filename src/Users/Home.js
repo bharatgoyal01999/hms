@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Container, Header, Left, Body, Right, Button, Icon, Title ,Drawer} from 'native-base';
-import {View,Image,ScrollView} from 'react-native'
+import { Container, Header, Input,Left, Body, Right, Button, Icon, Title ,Drawer} from 'native-base';
+import {View,Image,ScrollView,Modal,StyleSheet,TouchableOpacity} from 'react-native'
 import Micon from 'react-native-vector-icons/MaterialIcons'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import Mcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -9,7 +9,7 @@ import { Avatar, Accessory ,Text} from 'react-native-elements';
 import Colors from '../../Theme/Color'
 import ActivityTile from './Components/ActivityTile'
 import * as firebase from 'firebase'
-
+import MedicalHistory from './MedicalHistory'
 import * as backend from '../backend/backend_handling'
 import { heightPercentageToDP as hp ,widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -25,6 +25,12 @@ export default class HeaderIconExample extends Component {
     caloryBuredToday:null,
     PreviousRecord:{},
     ifLoginUser:false,
+    AadharNo:null,
+    hasAadhar:false,
+    Histoy:{},
+    ShowHistoryPage:false,
+    AskAadhar:false,
+    Name:null
   }
   componentDidMount=async ()=>{
     
@@ -45,6 +51,118 @@ export default class HeaderIconExample extends Component {
         name:dataSnap.val().Name
       })
     })
+    this.checkAadhar();
+  }
+
+
+getMedicalHistoryFromAadhar=async()=>{
+  console.log("No")
+  var path=firebase.database().ref('Patients').child(this.state.AadharNo).child('History')
+  await path.on('value',dataSnap=>{
+    if(dataSnap.val()){
+      console.log(dataSnap.val())
+      this.setState({Histoy:dataSnap.val(),ShowHistoryPage:true})
+    }
+  })
+}
+
+
+prdictWeight=(gender,height)=>{
+
+ /* var FemaleData=[];
+  var path=firebase.database().ref('WeightHeight/Female')
+  await path.on('value',data=>{
+    if(data.val()){
+      console.log("HIi")
+          FemaleData=data.val()
+    }
+  })
+// console.log(FemaleData)
+var height=[];
+var weight=[];
+FemaleData.forEach(item=>{
+  height.push(item.Height*2.54);
+  weight.push(item.Weight*0.4535);
+})
+//Linear Regression
+var hw=0,h=0,w=0,hs=0
+var n=height.length
+for(var i=0; i<height.length ;i++){
+
+  hw+=height[i]*weight[i];
+  h+=height[i];
+  w+=weight[i];
+  hs+=height[i]*height[i];
+
+}
+const slope=(hw-((h*w)/n))/(hs-((h*h)/n))
+
+
+const intercept= w/n-(slope*(h/n))
+console.log(slope,intercept)
+var predicted_weight=slope*155+intercept;
+console.log(predicted_weight);
+
+var Male=[];
+var path=firebase.database().ref('WeightHeight/Male')
+  await path.on('value',data=>{
+    if(data.val()){
+      console.log("HIi")
+          Male=data.val()
+    }
+  })
+
+// console.log(FemaleData)
+var height=[];
+var weight=[];
+Male.forEach(item=>{
+  
+  height.push(item.Height*2.54);
+  weight.push(item.Weight*0.4535);
+})
+
+//Linear Regression
+// console.log(weight)
+var hw=0,h=0,w=0,hs=0
+var n=height.length
+for(var i=0; i<height.length ;i++){
+
+  hw+=height[i]*weight[i];
+  h+=height[i];
+  w+=weight[i];
+  hs+=height[i]*height[i];
+
+}
+const slope1=(hw-((h*w)/n))/(hs-((h*h)/n))
+
+
+const intercept1= w/n-(slope1*(h/n))
+console.log(slope1,intercept1)
+var predicted_weight=slope1*155+intercept1;
+console.log(predicted_weight);*/
+
+
+if (gender=='Female'){
+  return 1.0701969054470157*height - 111.56701601604621
+}
+else{
+  return 1.0644348125020215*height - 101.81022425996534
+}
+}
+
+
+checkAadhar=async ()=>{
+var User=firebase.auth().currentUser;
+var path=firebase.database().ref('User').child(User['uid']).child('personalInfo')
+path.on('value',dataSnap=>{
+  if(dataSnap.val()['Aadhar']){
+    this.setState({AadharNo:dataSnap.val()['Aadhar'],hasAadhar:true,Name:dataSnap.val()['Name']})
+  }
+  else{
+    this.setState({Name:dataSnap.val()['Name']})
+  }
+
+})
   }
   render() {
   
@@ -53,7 +171,9 @@ export default class HeaderIconExample extends Component {
   
         <Header style={{backgroundColor:Colors.backgroundBlue, height:hp("8%")}}>
        <Left>
-         <Ficon name={'notes-medical'} color='white' size={wp("7%")}/>
+         <Ficon name={'notes-medical'} color='white' size={wp("7%")} onPress={()=>{
+           this.state.hasAadhar ? this.getMedicalHistoryFromAadhar() : this.setState({AskAadhar:true})
+         }}/>
        </Left>
           <Body>
     <Title>{"Hii "+ this.state.name  }</Title>
@@ -78,10 +198,58 @@ export default class HeaderIconExample extends Component {
           <ActivityTile title={'calories burn'} Icon={<Ficon name='fire' color={'#F52104'} size={wp("7%")}/>}/>
           <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>}/>
           <ActivityTile title={'sleep'} Icon={<Mcon name='sleep' color={'purple'} size={wp("7%")}/>}/>
-          <ActivityTile title={'Weight Loss'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>}/>
+          <ActivityTile title={'Weight Loss'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>} onTouch={()=>{
+            Actions.WeightLoss()
+          }} />
           </ScrollView>
-        
+        <Modal visible={this.state.ShowHistoryPage} onRequestClose={()=>this.setState({ShowHistoryPage:false})}>
+<MedicalHistory AadharNumber={this.state.AadharNo} Name={this.state.Name}/>
+        </Modal>
+        <Modal visible={this.state.AskAadhar}>
+        <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
+                    <View style={{
+                        backgroundColor:Colors.backgroundBlue, 
+                        width:wp("70%"), 
+                        height:hp("40%"),
+                        borderRadius:wp("2%"),
+                        justifyContent:'center',
+                        alignItems:'center'
+                        }}>
+                            <Text style={{color:'white', fontSize:wp("5%")}} > Enter Aadhar Number </Text>
+                            <Input value={this.state.AadharNo} style={styles.UserText} keyboardType='number-pad'  maxLength={12} onChangeText={(AadharNo)=>{this.setState({AadharNo})}}/> 
+                           <TouchableOpacity 
+                           style={{justifyContent:'center', 
+                           alignItems:'center',
+                            borderColor:'white',
+                            borderWidth:1, 
+                            width:wp("40%"),
+                            height:hp("5%"),
+                             marginBottom:hp("3%")}}
+                             onPress={()=>{
+                              var User=firebase.auth().currentUser;
+                              var path=firebase.database().ref('User').child(User['uid']).child('personalInfo/Aadhar')
+                             path.set(this.state.AadharNo)
+                               this.setState({hasAadhar:true,AskAadhar:false,ShowHistoryPage:true})}}
+                             >
+                            <Text style={{color:'white', fontSize:wp("5%")}}>Ok</Text></TouchableOpacity>
+                    </View>
+                    </View>
+        </Modal>
       </Container>
     );
   }
 }
+const styles= StyleSheet.create({
+
+  UserText:{
+      color:'white',
+      fontSize:wp("7%"),
+      width:wp("60%"),
+      height:hp("0%"),
+      marginVertical:hp("10%"),
+      alignSelf:'center',
+      borderWidth:wp("0.5%"),
+      borderColor:'white',
+      borderRadius:wp("2%"),
+      padding:wp("2%")
+  }  ,})
