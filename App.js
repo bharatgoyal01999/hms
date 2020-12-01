@@ -15,6 +15,8 @@ import UserLogin from './src/Users/LoginIn'
 
 // import fs from 'fs'r
 import * as firebase from 'firebase'
+import Call from './src/backend/CallPushNotification'
+
 
 import Config from './config'
 import Axios from 'axios'
@@ -30,15 +32,13 @@ export default class App extends React.Component{
 
     <Router>
       <Scene key="root">
-      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
+      <Scene key='Home' component={Home} title='Home'  hideNavBar />
       <Scene key='DocReg' component={DocRegister} hideNavBar  />
       <Scene key='DocLogin' component={DocLogin} hideNavBar />
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='Fitness' component={Fitness} hideNavBar />
-      <Scene key='UserReg' component={UserRegister} hideNavBar />
-      <Scene key='UserLogin' component={UserLogin} hideNavBar />
+      <Scene key='PushNotification' component={Call} hideNavBar initial />
       </Scene>
       </Router>
    
