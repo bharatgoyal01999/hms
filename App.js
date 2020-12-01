@@ -103,22 +103,23 @@ console.log(predicted_weight);
   return (
  
 
-    // <Router>
-    //   <Scene key="root">
-    //   <Scene key='Home' component={Home} title='Home' initial hideNavBar />
-    //   <Scene key='DocReg' component={DocRegister} hideNavBar  />
-    //   <Scene key='DocLogin' component={DocLogin} hideNavBar />
-    //   <Scene key='DocScreen' component={DocScreen} hideNavBar />      
-    //   <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
-    //   <Scene key='Treatment' component={Treatment} hideNavBar />
-    //   <Scene key='UserHome' component={UserHome} hideNavBar />
-    //   <Scene key='UserReg' component={UserRegister} hideNavBar />
-    //   <Scene key='UserLogin' component={UserLogin} hideNavBar />
-    //   <Scene key='Reminders' component={Reminders} hideNavBar />
-    //   <Scene key='WeightLoss' component={WeightLoss} hideNavBar />
-    //   </Scene>
-    //   </Router>
-    <></>
+    <Router>
+      <Scene key="root">
+      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
+      <Scene key='DocReg' component={DocRegister} hideNavBar  />
+      <Scene key='DocLogin' component={DocLogin} hideNavBar />
+      <Scene key='DocScreen' component={DocScreen} hideNavBar />      
+      <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
+      <Scene key='Treatment' component={Treatment} hideNavBar />
+      <Scene key='UserHome' component={UserHome} hideNavBar />
+      <Scene key='UserReg' component={UserRegister} hideNavBar />
+      <Scene key='UserLogin' component={UserLogin} hideNavBar />
+      <Scene key='Reminders' component={Reminders} hideNavBar />
+      <Scene key='WeightLoss' component={WeightLoss} hideNavBar />
+      <Scene key='CaloryCounter' component={Calories} hideNavBar />
+      </Scene>
+      </Router>
+    // <></>
    
 
     )

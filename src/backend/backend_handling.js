@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as firebase from 'firebase';
 import { Alert } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import Calories from '../Users/Activities/Calories';
 
 export const registerDoctor = (email, Password,name,lic,spec,phone) => {
   if(email && Password){
@@ -47,7 +48,7 @@ export const registerDoctor = (email, Password,name,lic,spec,phone) => {
 
 
 export const registerUser = (user_details) => {
-  console.log(user_details)
+
   if(user_details.Email && user_details.Password){
   firebase
   .auth()
@@ -57,6 +58,11 @@ export const registerUser = (user_details) => {
       const user = await firebase.auth().currentUser;
      console.log(firebase.auth().currentUser)
       if(user){
+        var NeededCal
+await firebase.database().ref('Calories').child(user_details.gender).child(user_details.Age).once('value').then(snap=>{
+NeededCal=snap.val();
+})
+
         AsyncStorage.setItem("UID",user.uid);
         const path_ref=firebase.database().ref('/User').child(user.uid).child('personalInfo')
         const Personal_Info={
@@ -65,8 +71,11 @@ export const registerUser = (user_details) => {
           Email:user_details.Email,
           Phone: user_details.Phone,
           Age:user_details.Age,
+          NeededCal:NeededCal,
+          Gender:user_details.gender,
           height:user_details.height,
-          weight:user_details.weight
+          weight:user_details.weight,
+          expectedWeight: user_details.gender==='Female' ? 1.0701969054470157*user_details.height - 111.56701601604621 : 1.0644348125020215*user_details.height - 101.81022425996534
 
         }
         path_ref.set(Personal_Info)

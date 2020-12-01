@@ -46,7 +46,20 @@ export default class HeaderIconExample extends Component {
     console.log(UID)
     const path_ref=firebase.database().ref("User").child(UID).child("personalInfo");
     path_ref.on("value",dataSnap=>{
+      var data=dataSnap.val();
       console.log(dataSnap.val())
+      if (Number(dataSnap.val().weight)-Number(dataSnap.val().expectedWeight)>4){
+        AsyncStorage.setItem("IsOverWeight",'true')
+        AsyncStorage.setItem("NeededCal",((Number(data.NeededCal.ModeratlyActive)+Number(data.NeededCal.Sedentary))/2).toString())
+      }
+      else{
+        AsyncStorage.setItem("IsOverWeight",'false')
+        AsyncStorage.setItem("NeededCal",((Number(data.NeededCal.ModeratlyActive)+Number(data.NeededCal.Active))/2).toString())
+      }
+      AsyncStorage.setItem("weight",dataSnap.val().weight)
+      AsyncStorage.setItem("Age",dataSnap.val().Age)
+
+      AsyncStorage.setItem("ExpectedWeight",dataSnap.val().expectedWeight.toString())
       this.setState({
         name:dataSnap.val().Name
       })
@@ -180,7 +193,7 @@ path.on('value',dataSnap=>{
           </Body>
           <Right>
          
-     <Ficon name='user-alt' color='white' size={wp("7%")} />
+     <Ficon name='user-alt' color='white' size={wp("7%")} onPress={()=>firebase.auth().signOut()}/>
           </Right>
         </Header>
         <View style={{ alignItems:'center',flexDirection:'row',justifyContent:'flex-start', height:hp("6%")}}>
@@ -192,13 +205,13 @@ path.on('value',dataSnap=>{
              onTouch={()=>{Actions.Reminders()}}
           />
           <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")}/>}
-       
+       onTouch={()=>Actions.CaloryCounter()}
           
           />
           <ActivityTile title={'calories burn'} Icon={<Ficon name='fire' color={'#F52104'} size={wp("7%")}/>}/>
           <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>}/>
           <ActivityTile title={'sleep'} Icon={<Mcon name='sleep' color={'purple'} size={wp("7%")}/>}/>
-          <ActivityTile title={'Weight Loss'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>} onTouch={()=>{
+          <ActivityTile title={'Weight Log'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>} onTouch={()=>{
             Actions.WeightLoss()
           }} />
           </ScrollView>

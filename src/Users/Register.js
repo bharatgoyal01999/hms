@@ -1,10 +1,9 @@
 import React from 'react'
 import {View, AsyncStorage, ScrollView, TouchableOpacity, ActivityIndicator} from 'react-native' ;
-import { Input ,Text, Button} from 'react-native-elements';
+import { Input ,Text, Button,CheckBox} from 'react-native-elements';
 import { Actions } from 'react-native-router-flux';
 import Colors from '../../Theme/Color'
-import { firebase } from '@firebase/app';
-import '@firebase/auth';
+import * as firebase from 'firebase'
 import * as backend from '../backend/backend_handling'
 
 import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
@@ -25,6 +24,7 @@ export default class Register extends React.Component{
         Email:null,
         loading:false,
         display:'none',
+        gender:''
 
     }
 
@@ -80,6 +80,10 @@ export default class Register extends React.Component{
   keyboardType='number-pad'
   onChangeText={val=>this.setState({Age:val})}
   />
+    <Text style={{marginLeft:10, fontSize:20}}>Gender</Text>
+  <CheckBox title='Male'  checkedColor={Colors.backgroundBlue} checked={this.state.gender==='Male'} onPress={()=>this.setState({gender:'Male'})}/>
+  <CheckBox title='Female' checkedColor={Colors.backgroundBlue} checked={this.state.gender==='Female'} onPress={()=>this.setState({gender:'Female'})}/>
+  <CheckBox title='Others'  checkedColor={Colors.backgroundBlue} checked={this.state.gender==='Others'} onPress={()=>sthis.setState({gender:'Other'})}/>
 
 <Input placeholder='weight(In kgs)' 
 onChangeText={val=>this.setState({weight:val})}/>
@@ -107,12 +111,12 @@ onChangeText={val=>this.setState({height:val})}/>
   onChangeText={val=>this.setState({ConfirmPass:val})}
   />
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}} 
- onPress={()=> { const {Email,Password,Age,height,weight,Phone,Name}=this.state; 
-  backend.registerUser({Email,Password,Name,Age,weight,height,Phone});
+ onPress={()=> { const {Email,Password,Age,height,weight,Phone,Name,gender}=this.state; 
+  backend.registerUser({Email,Password,Name,Age,weight,height,Phone,gender});
   this.setState({loading:false,display:'none'});
   AsyncStorage.getItem("UID").then(val=>{
     if(val){
-      this.setState({loginModal:false})
+   
       Actions.UserHome();
     }
   })
