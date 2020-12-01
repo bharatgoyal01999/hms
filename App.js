@@ -10,7 +10,8 @@ import FingerPrint from './src/Doctor/docScreenComp/FingerPrint'
 import  NewPatientReg from './src/Doctor/NewPatientRegistration'
 import Treatment from './src/Doctor/Treatment'
 import * as firebase from 'firebase'
-import CallPushNotification from './src/backend/CallPushNotification'
+import {Call} from './src/backend/CallPushNotification'
+
 
 import Config from './config'
 
@@ -30,7 +31,7 @@ export default class App extends React.Component{
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='PushNotification' component={CallPushNotification} hideNavBar />
+      <Scene key='PushNotification' component={Call} hideNavBar />
       </Scene>
       </Router>
    

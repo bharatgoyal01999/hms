@@ -74,4 +74,4 @@ class LocalNotificationService {
     }
 }
 
-export const LocalNotificationService = new LocalNotificationService()
+export const localNotificationService = new LocalNotificationService()
