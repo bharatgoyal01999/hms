@@ -60,7 +60,7 @@ const UpdateScreen=<View style={{flex:1,width:wp('100%')}}>
 
 <View style={{justifyContent:'center',alignItems:'center',backgroundColor:'#FB03B0'}}>
     <Text style={{color:'white', fontSize:wp("10%")}}>Weight Logs</Text>
-    <Text style={{color:'white', fontSize:wp("8%")}}>{'Expected Weight:'+ ExpectedWeight.slice(0,5) }</Text>
+    <Text style={{color:'white', fontSize:wp("6%")}}>{'Ideal Weight:'+(Number(ExpectedWeight.slice(0,3))-Number(4))+"-"+(Number(ExpectedWeight.slice(0,3))+Number(4))}</Text>
     <View style={{height:hp("11%")}} />
     <View style={{flexDirection:'row', width:wp("80%"),justifyContent:'space-between',alignItems:'space-between'}}>
         <View style={{width:wp("40%")}} >
