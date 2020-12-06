@@ -21,8 +21,44 @@ import Call from './src/backend/CallPushNotification'
 import Config from './config'
 import Axios from 'axios'
 
-// firebase.initializeApp(Config);
+firebase.initializeApp(Config);
 export default class App extends React.Component{
+
+  componentDidMount(){
+    fcmService.registerAppWithFCM()
+        fcmService.register(onRegister, onNotification, onOpenNotification)
+        localNotificationService.configure(onOpenNotification)
+
+        function onRegister(token) {
+            console.log("[App] onRegister: ",token)
+        }
+
+        function onNotification(notify) {
+            console.log("[App] onNotification: ",notify)
+            const options = {
+                soundName: 'default',
+                playSound: true
+            }
+            localNotificationService.showNotifiaction(
+                0,
+                notify.title,
+                notify.body,
+                notify,
+                options
+            )
+        }
+
+        function onOpenNotification(notify) {
+            console.log("[App] onOpenNotification: ",notify)
+            alert("Open Notification: " + notify.body)
+        }
+
+        return () => {
+            console.log("[App] unRegister")
+            fcmService.unRegister()
+            localNotificationService.unRegister()
+        }
+  }
 
 
   render(){
@@ -32,13 +68,13 @@ export default class App extends React.Component{
 
     <Router>
       <Scene key="root">
-      <Scene key='Home' component={Home} title='Home'  hideNavBar />
+      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
       <Scene key='DocReg' component={DocRegister} hideNavBar  />
       <Scene key='DocLogin' component={DocLogin} hideNavBar />
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='PushNotification' component={Call} hideNavBar initial />
+      <Scene key='PushNotification' component={Call} hideNavBar  />
       </Scene>
       </Router>
    

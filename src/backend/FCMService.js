@@ -78,7 +78,7 @@ class FCMService {
         });
         //foreground state messages
         this.messageListener = messaging().onMessage(async remoteMessage => {
-            console.og("[FCMService] A new FCM Service arrived!", remoteMessage);
+            console.log("[FCMService] A new FCM Service arrived!", remoteMessage);
             if(remoteMessage) {
                 let notification = null
                 notification = remoteMessage.notification
