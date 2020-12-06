@@ -15,7 +15,7 @@ import UserLogin from './src/Users/LoginIn'
 import MedicineReminder from './src/Users/Activities/MedicineReminder'
 import Calories from './src/Users/Activities/Calories'
 import Reminders from './src/Users/Activities/Reminders'
-import WeightLoss from './src/Users/Activities/WeightLoss'
+import WeightLogs from './src/Users/Activities/WeightLoss'
 // import fs from 'fs'r
 import * as firebase from 'firebase'
 
@@ -106,7 +106,7 @@ componentDidMount=async ()=>{
   render(){
 
   return (
-    <MedicineReminder />
+    <WeightLogs />
 
     // <Router>
     //   <Scene key="root">

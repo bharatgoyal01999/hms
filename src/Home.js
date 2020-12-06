@@ -5,6 +5,9 @@ import Config from '../config'
 import * as firebase from 'firebase'
 import {Actions } from 'react-native-router-flux'
 import AsyncStorage from '@react-native-community/async-storage'
+
+
+
 firebase.initializeApp(Config);
 export default class Home extends React.Component{
   state={
