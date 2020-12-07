@@ -5,7 +5,7 @@ import { Actions } from 'react-native-router-flux';
 import Colors from '../../Theme/Color'
 import { firebase } from '@firebase/app';
 import '@firebase/auth';
-import {handleDocReg}  from '../backend/backend_handling'
+import * as backend  from '../backend/backend_handling'
 
 import { heightPercentageToDP as hp , widthPercentageToDP as wp } from 'react-native-responsive-screen';
 
@@ -103,8 +103,10 @@ onChangeText={val=>this.setState({Speciality:val})}/>
   onChangeText={val=>this.setState({ConfirmPass:val})}
   />
 <TouchableOpacity  style={{alignItems:'center',alignSelf:'center' ,borderRadius:10, backgroundColor:Colors.backgroundBlue, width:120,height:40}} 
- onPress={()=> { const {Email,Password,License,Speciality,Phone}=this.state; 
-  handleDocReg({Email,Password,License,Speciality,Phone});
+ onPress={()=> {
+  const {Email,Password,License,Name,Speciality,Phone}=this.state; 
+  backend.registerDoctor(Email,Password,Name,License,Speciality,Phone);
+  
   this.setState({loading:false,display:'none'});}}>
   <Text style={{color:'white'}} h4>Register</Text> 
   </TouchableOpacity>

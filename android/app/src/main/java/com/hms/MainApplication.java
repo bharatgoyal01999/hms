@@ -7,6 +7,11 @@ import com.evollu.react.fcm.BuildConfig;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
+import com.imagepicker.ImagePickerPackage;
+
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
+import com.oblador.vectoricons.VectorIconsPackage;
+import com.swmansion.reanimated.ReanimatedPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -20,7 +25,8 @@ import androidx.multidex.MultiDexApplication;
 
 
 
-public class MainApplication extends MultiDexApplication implements ReactApplication {
+
+public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost =
       new ReactNativeHost(this) {
@@ -37,6 +43,7 @@ public class MainApplication extends MultiDexApplication implements ReactApplica
           // packages.add(new MyReactNativePackage());
           //packages.add(new ReactNativePushNotificationPackage());
           // packages.add(new GoogleFitPackage(BuildConfig.LIBRARY_PACKAGE_NAME));
+        
           return packages;
         }
 
