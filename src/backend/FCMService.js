@@ -97,4 +97,4 @@ class FCMService {
     }
 }
 
-export const fcmService = new FCMService()
+export default fcmService = new FCMService()

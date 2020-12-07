@@ -84,9 +84,9 @@ class LocalNotificationService {
         PushNotification.localNotificationSchedule({
             //... You can use all the options from localNotifications
             message: msg, // (required)
-            channelName: "My channel",
-            channelId: "My channel-id",
-            //eg. date: new Date(Date.now() + 10 * 1000), // in 10 secs
+            channelName: "HMS",
+            channelId: "hms-channel-id",
+            // date: new Date(Date.now() + 10 * 1000), // in 10 secs
             //The year must have 4 digits: 2013 is okay, 98 is not.
             //The month count starts with 0 (Jan), up to 11 (Dec).
             //The date parameter is actually the day of month, if absent then 1 is assumed.
@@ -98,4 +98,4 @@ class LocalNotificationService {
     }
 }
 
-export const localNotificationService = new LocalNotificationService()
+export default localNotificationService = new LocalNotificationService()

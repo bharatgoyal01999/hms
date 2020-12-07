@@ -15,10 +15,12 @@ import UserLogin from './src/Users/LoginIn'
 import MedicineReminder from './src/Users/Activities/MedicineReminder'
 import Calories from './src/Users/Activities/Calories'
 import Reminders from './src/Users/Activities/Reminders'
+import Config from './config'
 import WeightLogs from './src/Users/Activities/WeightLoss'
-// import fs from 'fs'r
+import localNotificationService from './src/backend/LocalNotificationService'
+import fcmService from './src/backend/FCMService'
 import * as firebase from 'firebase'
-import Call from './src/backend/CallPushNotification'
+// import Call from './src/backend/CallPushNotification'
 
 
 
@@ -31,10 +33,13 @@ firebase.initializeApp(Config);
 export default class App extends React.Component {
 
   componentDidMount=()=>{
+   
     fcmService.registerAppWithFCM()
+
         fcmService.register(onRegister, onNotification, onOpenNotification)
         localNotificationService.configure(onOpenNotification)
-
+        localNotificationService.scheduleNotifications('Hi there how you doing',2020,11,7,14,50,0,0)
+        // localNotificationService.showNotification(1,'helooo', '6666')
         function onRegister(token) {
             console.log("[App] onRegister: ",token)
         }
@@ -109,7 +114,7 @@ render(){
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='PushNotification' component={Call} hideNavBar  />
+    
       </Scene>
       </Router>
   
