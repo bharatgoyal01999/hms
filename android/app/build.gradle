@@ -129,6 +129,7 @@ android {
 
     dependencies {
         implementation project(':react-native-google-fit')
+        implementation project(':react-native-push-notification')
         implementation fileTree(dir: "libs", include: ["*.jar"])
         //noinspection GradleDynamicVersion
         implementation "com.facebook.react:react-native:+"  // From node_modules
@@ -136,6 +137,7 @@ android {
         //By using the Firebase Android BoM, your app will always use compatible versions of the Firebase Android libraries.
         implementation platform('com.google.firebase:firebase-bom:26.1.0')
         implementation "com.google.firebase:firebase-messaging:21.0.0"
+        //implementation "com.google.android.gms:play-services-fitness:8.4.0"
         implementation 'com.google.firebase:firebase-analytics:18.0.0'
         implementation "com.google.android.gms:play-services-base:17.5.0"
         implementation "com.google.firebase:firebase-core:18.0.0"

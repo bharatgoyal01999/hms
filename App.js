@@ -26,53 +26,46 @@ import Axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
 
 
-export default class App extends React.Component{
+firebase.initializeApp(Config);
 
-componentDidMount=async ()=>{
-  // AsyncStorage.setItem('date','');
-  // AsyncStorage.setItem('TodaySelectedItem','');
-// var FemaleData=[];
-//   var path=firebase.database().ref('WeightHeight/Female')
-//   await path.on('value',data=>{
-//     if(data.val()){
-//       console.log("HIi")
-//           FemaleData=data.val()
-//     }
-//   })
-// // console.log(FemaleData)
-// var height=[];
-// var weight=[];
-// FemaleData.forEach(item=>{
-//   height.push(item.Height*2.54);
-//   weight.push(item.Weight*0.4535);
-// })
-// //Linear Regression
-// var hw=0,h=0,w=0,hs=0
-// var n=height.length
-// for(var i=0; i<height.length ;i++){
+export default class App extends React.Component {
 
-//   hw+=height[i]*weight[i];
-//   h+=height[i];
-//   w+=weight[i];
-//   hs+=height[i]*height[i];
+  componentDidMount=()=>{
+    fcmService.registerAppWithFCM()
+        fcmService.register(onRegister, onNotification, onOpenNotification)
+        localNotificationService.configure(onOpenNotification)
 
-// }
-// const slope=(hw-((h*w)/n))/(hs-((h*h)/n))
+        function onRegister(token) {
+            console.log("[App] onRegister: ",token)
+        }
 
+        function onNotification(notify) {
+            console.log("[App] onNotification: ",notify)
+            const options = {
+                soundName: 'default',
+                playSound: true
+            }
+            localNotificationService.showNotifiaction(
+                0,
+                notify.title,
+                notify.body,
+                notify,
+                options
+            )
+        }
 
-// const intercept= w/n-(slope*(h/n))
-// console.log(slope,intercept)
-// var predicted_weight=slope*155+intercept;
-// console.log(predicted_weight);
+        function onOpenNotification(notify) {
+            console.log("[App] onOpenNotification: ",notify)
+            alert("Open Notification: " + notify.body)
+        }
 
-// var Male=[];
-// var path=firebase.database().ref('WeightHeight/Male')
-//   await path.on('value',data=>{
-//     if(data.val()){
-//       console.log("HIi")
-//           Male=data.val()
-//     }
-//   })
+        return () => {
+            console.log("[App] unRegister")
+            fcmService.unRegister()
+            localNotificationService.unRegister()
+        }
+  }
+
 
 // // console.log(FemaleData)
 // var height=[];
@@ -103,22 +96,20 @@ componentDidMount=async ()=>{
 // var predicted_weight=slope1*155+intercept1;
 // console.log(predicted_weight);
 // // console.log(hw,h,w,hs)
-
-}
-  render(){
+render(){
 
   return (
  
 
     <Router>
       <Scene key="root">
-      <Scene key='Home' component={Home} title='Home'  hideNavBar />
+      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
       <Scene key='DocReg' component={DocRegister} hideNavBar  />
       <Scene key='DocLogin' component={DocLogin} hideNavBar />
       <Scene key='DocScreen' component={DocScreen} hideNavBar />      
       <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
       <Scene key='Treatment' component={Treatment} hideNavBar />
-      <Scene key='PushNotification' component={Call} hideNavBar initial />
+      <Scene key='PushNotification' component={Call} hideNavBar  />
       </Scene>
       </Router>
   
@@ -145,4 +136,6 @@ componentDidMount=async ()=>{
     )
 
 }
+
 }
+
