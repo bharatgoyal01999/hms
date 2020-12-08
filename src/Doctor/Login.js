@@ -30,6 +30,7 @@ export default class LogIn extends React.Component{
     console.log(user.uid)
     if(user){
       AsyncStorage.setItem("UID",user.uid)
+      AsyncStorage.setItem("ISDoctor",'true')
       this.setState({loginModal:false});
       Actions.DocScreen()
     }})

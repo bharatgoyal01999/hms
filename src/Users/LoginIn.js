@@ -75,13 +75,12 @@ onChangeText={val=>this.setState({Email:val})}
   console.log('Register')
   var {Email,Password}=this.state
 backend.loginUser(Email,Password)
-  AsyncStorage.getItem("UID").then(val=>{
-  if(val){
+
     console.log("Hiiii")
     this.setState({loginModal:false})
     Actions.UserHome();
-  }
-})
+    
+
 
 }}
 

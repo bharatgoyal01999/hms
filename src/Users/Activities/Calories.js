@@ -25,13 +25,30 @@ export default ()=>{
  var [visibleSearch,setVisibleSearch]=useState(false);
 
     useEffect((()=>{
-        AsyncStorage.getItem("NeededCal").then(val=>setCalories(val)),
+        AsyncStorage.getItem("NeededCal").then(val=>setCalories(val));
+
         AsyncStorage.getItem('date').then(val=>{
             var D=new Date;
             var date=D.getDate().toString()+(D.getMonth()+1).toString()+D.getFullYear().toString()
             if (val!=date){
              //Add firebase code of posting calories;
-                AsyncStorage.setItem('date',date)
+         AsyncStorage.setItem('date',date)
+    AsyncStorage.getItem('TodaySelectedItem').then(vall=>{
+                    vall=JSON.parse(vall)
+                    if(vall){
+                    var cal=0
+                    vall.forEach(item=>{
+                            cal=cal+item['Calories']
+                           
+                    })
+                    cal= cal.toPrecision([4])
+                    console.log(cal)
+                    AsyncStorage.getItem("UID").then(valll=>{
+
+                        firebase.database().ref("User").child(valll).child(val.toString()).set(cal)
+                        
+                                     }) 
+                                    }})
                 AsyncStorage.setItem('TodaySelectedItem','');
             }
             else {

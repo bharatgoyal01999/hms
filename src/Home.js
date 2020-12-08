@@ -9,21 +9,32 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 
 export default class Home extends React.Component{
+
   state={
     isUserLogin:false,
     
   }
   componentDidMount=()=>{
-    firebase.auth().onAuthStateChanged(user=>{
-     if(user){
-      var path=firebase.database().ref('User/'+user['uid']+"/personalInfo")
-      path.on('value',data=>{
-        // AsyncStorage.setItem("Profile",data.val())
-      })
-      this.setState({isUserLogin:true})
-      AsyncStorage.setItem('UID',user.uid)
-     }
+
+    AsyncStorage.getItem("UID").then( async (val)=>{
+      if(val){
+        console.log(val)
+        AsyncStorage.getItem("ISDoctor").then(vall=>{
+
+          if (vall==='true'){
+            Actions.DocScreen()
+          }
+          else if(vall==='false'){
+            Actions.UserHome()
+          }
+        })
+      
+      }
+      else{
+        console.log(val)
+      }
     })
+
   }
   render(){
   return (
@@ -32,13 +43,9 @@ export default class Home extends React.Component{
    
 <TouchableOpacity style={styles.button} onPress={()=>{ {
 
-      if(this.state.isUserLogin){
-        Actions.DocScreen()
-      }
-
-      else{
+  
         Actions.DocLogin()
-      }
+      
 
     } } }>
   <Text numberOfLines={2} style={styles.buttonTxt}>Doctor Login</Text>
@@ -48,12 +55,9 @@ export default class Home extends React.Component{
 <TouchableOpacity style={styles.button}>
   <Text style={styles.buttonTxt} onPress={()=>
     {
-      if(this.state.isUserLogin){
-        Actions.UserHome()
-      }
-      else{
+     
         Actions.UserLogin()
-      }
+      
     }
     }>Patient Login</Text>
 </TouchableOpacity>

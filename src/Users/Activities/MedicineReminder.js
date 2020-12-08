@@ -1,10 +1,10 @@
 import AsyncStorage from '@react-native-community/async-storage';
 import React, {useState,useEffect} from 'react'
-import {View, Text, Modal,StyleSheet,TouchableOpacity,TextInput,Button} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler';
+import {View,ScrollView, Text, Modal,StyleSheet,TouchableOpacity,TextInput,Button} from 'react-native'
+
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {widthPercentageToDP as wp , heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Mcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Mcon from 'react-native-vector-icons/Ionicons'
 const ThemeColor='#1285EA';
 const ReminderTile=({rem,deletItem})=>{
     return (
@@ -78,7 +78,7 @@ const showDatePicker = () => {
 
   
 useEffect(()=>{
-
+// AsyncStorage.setItem("Reminders",'')
 AsyncStorage.getItem("Reminders").then(val=>{
     if(val)
    { val=JSON.parse(val);

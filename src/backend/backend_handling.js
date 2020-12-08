@@ -23,6 +23,8 @@ export const registerDoctor = (email, Password,name,lic,spec,phone) => {
         Phone: phone,
       }
       path_ref.set(Personal_Info)
+      AsyncStorage.setItem("UID",user.uid);
+        AsyncStorage.setItem("ISDoctor",'true');
       alert('User account created & signed in!');
       Actions.DocScreen()
     }
@@ -63,7 +65,7 @@ await firebase.database().ref('Calories').child(user_details.gender).child(user_
 NeededCal=snap.val();
 })
 
-        AsyncStorage.setItem("UID",user.uid);
+        
         const path_ref=firebase.database().ref('/User').child(user.uid).child('personalInfo')
         const Personal_Info={
 
@@ -79,6 +81,8 @@ NeededCal=snap.val();
 
         }
         path_ref.set(Personal_Info)
+        AsyncStorage.setItem("UID",user.uid);
+        AsyncStorage.setItem("ISDoctor",'false');
         alert('User account created & signed in!');
      
       }
@@ -107,11 +111,14 @@ NeededCal=snap.val();
     if(email && Password){
       var uid;
    firebase.auth().signInWithEmailAndPassword(email, Password).then(res=>{
-     AsyncStorage.setItem('UID',res['uid'])
+     console.log(res['user']['uid'])
+     AsyncStorage.setItem('UID',res['user']['uid'])
+     AsyncStorage.setItem("ISDoctor",'false')
      var path=firebase.database().ref('User/'+res['uid']+"/personalInfo")
      path.on('value',data=>{
        AsyncStorage.setItem('Profile',data.val())
      })
+    
     })
     .catch(function(error) {
       var errorCode = error.code;

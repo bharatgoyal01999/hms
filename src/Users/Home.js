@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Header, Input,Left, Body, Right, Button, Icon, Title ,Drawer} from 'native-base';
 import {View,Image,ScrollView,Modal,StyleSheet,TouchableOpacity} from 'react-native'
+
 import Micon from 'react-native-vector-icons/MaterialIcons'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
 import Mcon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -14,6 +15,8 @@ import * as backend from '../backend/backend_handling'
 import { heightPercentageToDP as hp ,widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
+import * as Gfit from '../backend/GoogleFit'
+
 export default class HeaderIconExample extends Component {
   state={
     display:'flex',
@@ -30,7 +33,8 @@ export default class HeaderIconExample extends Component {
     Histoy:{},
     ShowHistoryPage:false,
     AskAadhar:false,
-    Name:null
+    Name:null,
+    GoogleFitData:{},
   }
   componentDidMount=async ()=>{
     
@@ -193,16 +197,22 @@ path.on('value',dataSnap=>{
           </Body>
           <Right>
          
-     <Ficon name='user-alt' color='white' size={wp("7%")} onPress={()=>firebase.auth().signOut()}/>
+     <Ficon name='user-alt' color='white' size={wp("7%")} onPress={()=>{firebase.auth().signOut();
+     AsyncStorage.setItem("UID",'')
+     Actions.Home();
+    }
+    }/>
           </Right>
         </Header>
         <View style={{ alignItems:'center',flexDirection:'row',justifyContent:'flex-start', height:hp("6%")}}>
           <Image resizeMode={'contain'} style={{width:wp("8%"), height:hp("6%")}} source={{uri:"https://upload.wikimedia.org/wikipedia/commons/6/60/Google-Fit-Icon.png"}} />
-        <Text style={{fontSize:wp("5%")}}>Google-Fit</Text>
+        <Text style={{fontSize:wp("5%")}} onPress={()=>{
+            Gfit.isAuthorized()
+        }}>Google-Fit</Text>
           </View>
          <ScrollView style={{flex:1}}>
           <ActivityTile title={'Medicine Reminders'} Icon={<Ficon name='pills' color='#1285EA' size={wp("7%")} />}
-             onTouch={()=>{Actions.Reminders()}}
+             onTouch={()=>{Actions.MR()}}
           />
           <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")}/>}
        onTouch={()=>Actions.CaloryCounter()}
@@ -212,13 +222,13 @@ path.on('value',dataSnap=>{
           <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>}/>
           <ActivityTile title={'sleep'} Icon={<Mcon name='sleep' color={'purple'} size={wp("7%")}/>}/>
           <ActivityTile title={'Weight Log'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>} onTouch={()=>{
-            Actions.WeightLoss()
+            Actions.WeightLogs()
           }} />
           </ScrollView>
-        <Modal visible={this.state.ShowHistoryPage} onRequestClose={()=>this.setState({ShowHistoryPage:false})}>
+        <Modal visible={this.state.ShowHistoryPage}  onRequestClose={()=>this.setState({ShowHistoryPage:false})}>
 <MedicalHistory AadharNumber={this.state.AadharNo} Name={this.state.Name}/>
         </Modal>
-        <Modal visible={this.state.AskAadhar}>
+        <Modal visible={this.state.AskAadhar} transparent onRequestClose={()=>this.setState({AskAadhar:false})}>
         <View style={{flex:1, justifyContent:'center', alignItems:'center'}}>
                     <View style={{
                         backgroundColor:Colors.backgroundBlue, 

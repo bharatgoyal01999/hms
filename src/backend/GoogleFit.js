@@ -11,7 +11,7 @@ const options = {
   ],
 }
 
-isAuthorized = () => {
+export const isAuthorized = () => {
     
       GoogleFit.authorize(options)
         .then(authResult => {
@@ -19,6 +19,7 @@ isAuthorized = () => {
             dispatch("AUTH_SUCCESS");
             // Call when authorized
             GoogleFit.startRecording((callback) => {
+              console.log(callback)
             // Process data from Google Fit Recording API (no google fit app needed)
           });
   
@@ -32,7 +33,7 @@ isAuthorized = () => {
     
 }
 
-function getStepsForAndroid(startDate, endDate) {
+export function getStepsForAndroid(startDate, endDate) {
   const options = {
       startDate: new Date(startDate).toISOString(), // required ISO8601Timestamp
       endDate: new Date(endDate).toISOString() // required ISO8601Timestamp
@@ -40,7 +41,7 @@ function getStepsForAndroid(startDate, endDate) {
   return GoogleFit.getDailyStepCountSamples(options)
 }
 
-function getWeightForAndroid(startDate, endDate) {
+export function getWeightForAndroid(startDate, endDate) {
   const opt = {
     unit: "kg", // required; default 'kg'
     startDate: new Date(startDate).toISOString(), // required ISO8601Timestamp
@@ -50,7 +51,7 @@ function getWeightForAndroid(startDate, endDate) {
   return GoogleFit.getWeightSamples(opt)
 }
 
-function getHeightForAndroid(startDate, endDate) {
+export function getHeightForAndroid(startDate, endDate) {
   const opt = {
     startDate: new Date(startDate).toISOString(), // required ISO8601Timestamp
     endDate: new Date(endDate).toISOString(),
@@ -58,7 +59,7 @@ function getHeightForAndroid(startDate, endDate) {
   return GoogleFit.getHeightSamples(opt)
 }
 
-function saveWeight(){
+export function saveWeight(){
   const opt = {
     value: 200,
     date: new Date().toISOString(),
@@ -70,7 +71,7 @@ function saveWeight(){
   });
 }
 
-function getHeartRate(startDate, endDate){
+export function getHeartRate(startDate, endDate){
   const options = {
     startDate:new Date(startDate).toISOString(), // required ISO8601Timestamp
     endDate: new Date(endDate).toISOString(),
@@ -83,7 +84,7 @@ function getHeartRate(startDate, endDate){
    
 }
 
-function getBloodPressure(startDate, endDate){
+export function getBloodPressure(startDate, endDate){
   const options = {
     startDate:new Date(startDate).toISOString(), // required ISO8601Timestamp
     endDate: new Date(endDate).toISOString(),

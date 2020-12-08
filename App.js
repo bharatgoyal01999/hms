@@ -19,6 +19,7 @@ import Config from './config'
 import WeightLogs from './src/Users/Activities/WeightLoss'
 import localNotificationService from './src/backend/LocalNotificationService'
 import fcmService from './src/backend/FCMService'
+import MR from './src/Users/Activities/MedicineReminder'
 import * as firebase from 'firebase'
 // import Call from './src/backend/CallPushNotification'
 
@@ -33,10 +34,10 @@ firebase.initializeApp(Config);
 export default class App extends React.Component {
 
   componentDidMount=()=>{
-   
-    fcmService.registerAppWithFCM()
 
-        fcmService.register(onRegister, onNotification, onOpenNotification)
+       
+         fcmService.registerAppWithFCM()
+         fcmService.register(onRegister, onNotification, onOpenNotification)
         localNotificationService.configure(onOpenNotification)
         localNotificationService.scheduleNotifications('Hi there how you doing',2020,11,7,14,50,0,0)
         // localNotificationService.showNotification(1,'helooo', '6666')
@@ -106,19 +107,6 @@ render(){
   return (
  
 
-    <Router>
-      <Scene key="root">
-      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
-      <Scene key='DocReg' component={DocRegister} hideNavBar  />
-      <Scene key='DocLogin' component={DocLogin} hideNavBar />
-      <Scene key='DocScreen' component={DocScreen} hideNavBar />      
-      <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
-      <Scene key='Treatment' component={Treatment} hideNavBar />
-    
-      </Scene>
-      </Router>
-  
-
     // <Router>
     //   <Scene key="root">
     //   <Scene key='Home' component={Home} title='Home' initial hideNavBar />
@@ -127,14 +115,28 @@ render(){
     //   <Scene key='DocScreen' component={DocScreen} hideNavBar />      
     //   <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
     //   <Scene key='Treatment' component={Treatment} hideNavBar />
-    //   <Scene key='UserHome' component={UserHome} hideNavBar />
-    //   <Scene key='UserReg' component={UserRegister} hideNavBar />
-    //   <Scene key='UserLogin' component={UserLogin} hideNavBar />
-    //   <Scene key='Reminders' component={Reminders} hideNavBar />
-    //   <Scene key='WeightLoss' component={WeightLoss} hideNavBar />
-    //   <Scene key='CaloryCounter' component={Calories} hideNavBar />
+    
     //   </Scene>
     //   </Router>
+  
+
+    <Router>
+      <Scene key="root">
+      <Scene key='Home' component={Home} title='Home' initial hideNavBar />
+      <Scene key='DocReg' component={DocRegister} hideNavBar  />
+      <Scene key='DocLogin' component={DocLogin} hideNavBar />
+      <Scene key='DocScreen' component={DocScreen} hideNavBar />      
+      <Scene key='NewPatient' component={NewPatientReg} hideNavBar />
+      <Scene key='Treatment' component={Treatment} hideNavBar />
+      <Scene key='UserHome' component={UserHome} hideNavBar />
+      <Scene key='UserReg' component={UserRegister} hideNavBar />
+      <Scene key='UserLogin' component={UserLogin} hideNavBar />
+      <Scene key='Reminders' component={Reminders} hideNavBar />
+      <Scene key='WeightLogs' component={WeightLogs} hideNavBar />
+      <Scene key='MR' component={MR} hideNavBar />
+      <Scene key='CaloryCounter' component={Calories} hideNavBar />
+      </Scene>
+      </Router>
     // <></>
    
 
