@@ -21,9 +21,11 @@ import localNotificationService from './src/backend/LocalNotificationService'
 import fcmService from './src/backend/FCMService'
 import MR from './src/Users/Activities/MedicineReminder'
 import * as firebase from 'firebase'
+import * as Gfit from './src/backend/GoogleFit'
 // import Call from './src/backend/CallPushNotification'
 
-
+// https://prod.liveshare.vsengsaas.visualstudio.com/join?F1B6AD21174A1B150A0404F3395117B8BCD9
+// iPs4ZoYsFTy3HaO4PobolJO0
 
 import Axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
@@ -39,7 +41,7 @@ export default class App extends React.Component {
          fcmService.registerAppWithFCM()
          fcmService.register(onRegister, onNotification, onOpenNotification)
         localNotificationService.configure(onOpenNotification)
-        localNotificationService.scheduleNotifications('Hi there how you doing',2020,11,7,14,50,0,0)
+     
         // localNotificationService.showNotification(1,'helooo', '6666')
         function onRegister(token) {
             console.log("[App] onRegister: ",token)

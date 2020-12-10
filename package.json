@@ -12,10 +12,10 @@
   "dependencies": {
     "@expo/vector-icons": "^10.2.1",
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/datetimepicker": "^3.0.6",
     "@react-native-firebase/app": "^10.1.0",
     "@react-native-firebase/auth": "^10.0.0",
     "@react-native-firebase/messaging": "^10.0.0",
-    "@react-native-community/datetimepicker": "^3.0.6",
     "axios": "^0.20.0",
     "capacitor-google-fit": "^0.2.3",
     "expo-font": "^8.3.0",

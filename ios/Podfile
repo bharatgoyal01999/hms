@@ -20,6 +20,8 @@ target 'hms' do
 
   pod 'react-native-fcm', :path => '../node_modules/react-native-fcm'
 
+  pod 'RNCustomizedImagePicker', :path => '../node_modules/react-native-customized-image-picker'
+
   target 'hmsTests' do
     inherit! :complete
     # Pods for testing

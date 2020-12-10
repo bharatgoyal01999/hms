@@ -80,8 +80,10 @@ const showDatePicker = () => {
 useEffect(()=>{
 // AsyncStorage.setItem("Reminders",'')
 AsyncStorage.getItem("Reminders").then(val=>{
-    if(val)
-   { val=JSON.parse(val);
+
+if(val)
+   { 
+    val=JSON.parse(val);
     if (val.length>0)
     {console.warn(val)
     setEmptyReminder(false)
@@ -94,7 +96,7 @@ setEmptyReminder(true)
 
 }
 else{
-    setEmptyReminder(false)
+    setEmptyReminder(true)
 }
 
 })
@@ -161,12 +163,15 @@ style={{borderBottomColor:'black', borderBottomWidth:1}}/>
 
        <View style={{flex:0.25, flexDirection:'row', justifyContent:'space-evenly', alignItems:'center'}}>
        <TouchableOpacity style={styles.addBtn} onPress={()=>{
+
 var Reminders=reminders;
 Reminders.push({
     'Title':medicineName,
     'date':date,
     'time':time,
 })
+
+console.log(Object.values(date))
 
 AsyncStorage.setItem('Reminders',JSON.stringify(Reminders));
 setReminders(Reminders)

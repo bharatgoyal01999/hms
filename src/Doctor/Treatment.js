@@ -11,8 +11,8 @@ import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsi
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
 import PatientHistory from './PatientHistory'
-import ImagePicker from 'react-native-image-picker'
-
+import ImagePicker from 'react-native-image-crop-picker'
+// import ImagePicker from 'react-native-customized-image-picker'
 // import BandData from './bmodules';
 
 const PatientBasicInfo=(Info)=>{
@@ -125,65 +125,104 @@ componentDidMount=async ()=>{
 
 
     uploadPriscription=  async ()=>{
-        const options = {
-            title: 'Select Priscriptions',
-          
-            storageOptions: {
-              skipBackup: true,
-              path: 'images',
-            },
-          };
-        ImagePicker.showImagePicker(options, async (response) => {
-            // Same code as in above section!
-            console.log('Response = ', response);
- 
-  if (response.didCancel) {
-    console.log('User cancelled image picker');
-  } else if (response.error) {
-    console.log('ImagePicker Error: ', response.error);
-  } else if (response.customButton) {
-    console.log('User tapped custom button: ', response.customButton);
-  } else {
-    const source = { uri: response.uri };
- 
-    // You can also display the image using data:
-    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
 
-    this.setState({
-      PriscriptionImage: source,
-     });
-     const today=new Date;
-     var key;
-   
-     const date=today.getFullYear().toString()+(today.getMonth()+1).toString()+today.getDate().toString()
-     const  uri = this.state.PriscriptionImage.uri;
-     console.log(uri)
-    //  const filename = uri.substring(uri.lastIndexOf('/') + 1);
-    const res = await fetch(uri)
-    // console.log(res)
-    const blob=await res.blob();
-         var storageRef = firebase.storage().ref()
-         const finalref=storageRef.child('Priscription/'+date.toString()+this.props.AadharNumber.toString())
-    //      // Create file metadata including the content type
-        
-     var metadata = {
-     contentType: 'image/jpeg',
-     };
-     
-    finalref.put(blob, metadata).then(snapshot=>{
-        console.log(blob)
-         let upLodingRatio=snapshot.bytesTransferred/snapshot.totalBytes
-           console.log(upLodingRatio)
-        //  this.setState({upLodingRatio})
- 
-     }).catch((err)=>{
-     console.log(err)
-     alert(err)
-     });
-   
+        ImagePicker.openPicker({
+            width: 300,
+            height: 400,
+            cropping: true,
+          }).then(async (image) => {
+            console.log(image);
+            this.setState({
+                PriscriptionImage: image,
+               });
+               const today=new Date;
+                    var key;
 
-  }
+               const date=today.getFullYear().toString()+(today.getMonth()+1).toString()+today.getDate().toString()
+               const  uri = this.state.PriscriptionImage.path;
+               console.log(uri)
+               const res = await fetch(uri)
+               // console.log(res)
+               const blob=await res.blob();
+                    var storageRef = firebase.storage().ref()
+                    const finalref=storageRef.child('Priscription/'+date.toString()+this.props.AadharNumber.toString())
+               //      // Create file metadata including the content type
+                   
+                var metadata = {
+                contentType: 'image/jpeg',
+                };
+                
+               finalref.put(blob, metadata).then(snapshot=>{
+                   console.log(blob)
+                    let upLodingRatio=snapshot.bytesTransferred/snapshot.totalBytes
+                      console.log(upLodingRatio)
+                   //  this.setState({upLodingRatio})
+            
+                }).catch((err)=>{
+                console.log(err)
+                alert(err)
+                });
           });
+
+//         const options = {
+//             title: 'Select Priscriptions',
+          
+//             storageOptions: {
+//               skipBackup: true,
+//               path: 'images',
+//             },
+//           };
+//         ImagePicker.launchImageLibrary(options, async (response) => {
+//             // Same code as in above section!
+//             console.log('Response = ', response);
+ 
+//   if (response.didCancel) {
+//     console.log('User cancelled image picker');
+//   } else if (response.error) {
+//     console.log('ImagePicker Error: ', response.error);
+//   } else if (response.customButton) {
+//     console.log('User tapped custom button: ', response.customButton);
+//   } else {
+//     const source = { uri: response.uri };
+ 
+//     // You can also display the image using data:
+//     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+//     this.setState({
+//       PriscriptionImage: source,
+//      });
+//      const today=new Date;
+//      var key;
+   
+//      const date=today.getFullYear().toString()+(today.getMonth()+1).toString()+today.getDate().toString()
+//      const  uri = this.state.PriscriptionImage.uri;
+//      console.log(uri)
+//     //  const filename = uri.substring(uri.lastIndexOf('/') + 1);
+//     const res = await fetch(uri)
+//     // console.log(res)
+//     const blob=await res.blob();
+//          var storageRef = firebase.storage().ref()
+//          const finalref=storageRef.child('Priscription/'+date.toString()+this.props.AadharNumber.toString())
+//     //      // Create file metadata including the content type
+        
+//      var metadata = {
+//      contentType: 'image/jpeg',
+//      };
+     
+//     finalref.put(blob, metadata).then(snapshot=>{
+//         console.log(blob)
+//          let upLodingRatio=snapshot.bytesTransferred/snapshot.totalBytes
+//            console.log(upLodingRatio)
+//         //  this.setState({upLodingRatio})
+ 
+//      }).catch((err)=>{
+//      console.log(err)
+//      alert(err)
+//      });
+   
+
+//   }
+//           });
 
 
     }

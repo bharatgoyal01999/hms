@@ -1,35 +1,33 @@
-import GoogleFit , { Scopes } from 'react-native-google-fit';
+import GoogleFit , { Scopes} from 'react-native-google-fit';
 
 const GoogleApiClientId = "311096852390-hrc5n7d8k8h0es8f7h5ljtjnvgpmhh5b.apps.googleusercontent.com";
 
-const options = {
-  scopes: [
-    Scopes.FITNESS_ACTIVITY_READ,
-    Scopes.FITNESS_ACTIVITY_READ_WRITE,
-    Scopes.FITNESS_BODY_READ,
-    Scopes.FITNESS_BODY_READ_WRITE,
-  ],
-}
 
-export const isAuthorized = () => {
-    
+
+export function isAuthorized  () {
+  console.log(Scopes)
+  var options = {
+    scopes: [
+      Scopes.FITNESS_ACTIVITY_READ,
+  
+    ]
+  }
+  try{
       GoogleFit.authorize(options)
         .then(authResult => {
+          console.log(authResult)
           if (authResult.success) {
-            dispatch("AUTH_SUCCESS");
-            // Call when authorized
-            GoogleFit.startRecording((callback) => {
-              console.log(callback)
-            // Process data from Google Fit Recording API (no google fit app needed)
-          });
+            console.log("AUTH_SUCCESS");
+           
   
           } else {
-            dispatch("AUTH_DENIED", authResult.message);
+            console.log("AUTH_DENIED", authResult.message);
           }
         })
         .catch(() => {
           dispatch("AUTH_ERROR");
-        })
+        })}
+        catch{(err)=>{console.log("err is", err)}}
     
 }
 

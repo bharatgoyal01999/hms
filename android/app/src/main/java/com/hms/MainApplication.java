@@ -6,6 +6,8 @@ import android.content.Context;
 import com.evollu.react.fcm.BuildConfig;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.reactnative.googlefit.GoogleFitPackage;
+import com.reactnative.googlefit.GoogleFitPackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.imagepicker.ImagePickerPackage;

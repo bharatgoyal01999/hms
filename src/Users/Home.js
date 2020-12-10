@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Header, Input,Left, Body, Right, Button, Icon, Title ,Drawer} from 'native-base';
-import {View,Image,ScrollView,Modal,StyleSheet,TouchableOpacity} from 'react-native'
+import {View,Image,ScrollView,Modal,StyleSheet,TouchableOpacity,Switch} from 'react-native'
 
 import Micon from 'react-native-vector-icons/MaterialIcons'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
@@ -15,6 +15,7 @@ import * as backend from '../backend/backend_handling'
 import { heightPercentageToDP as hp ,widthPercentageToDP as wp} from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-community/async-storage';
 import { Actions } from 'react-native-router-flux';
+import GoogleFit , { Scopes } from 'react-native-google-fit';
 import * as Gfit from '../backend/GoogleFit'
 
 export default class HeaderIconExample extends Component {
@@ -34,10 +35,16 @@ export default class HeaderIconExample extends Component {
     ShowHistoryPage:false,
     AskAadhar:false,
     Name:null,
+    isAuthrised:false,
     GoogleFitData:{},
   }
   componentDidMount=async ()=>{
-    
+    GoogleFit.checkIsAuthorized().then(() => {
+      console.log(GoogleFit.isAuthorized)
+      this.setState({isAuthorized:GoogleFit.isAuthorized}) // Then you can simply refer to `GoogleFit.isAuthorized` boolean.
+  })
+
+        
 
     var UID;
    await AsyncStorage.getItem("UID").then(val=>{
@@ -52,6 +59,7 @@ export default class HeaderIconExample extends Component {
     path_ref.on("value",dataSnap=>{
       var data=dataSnap.val();
       console.log(dataSnap.val())
+    
       if (Number(dataSnap.val().weight)-Number(dataSnap.val().expectedWeight)>4){
         AsyncStorage.setItem("IsOverWeight",'true')
         AsyncStorage.setItem("NeededCal",((Number(data.NeededCal.ModeratlyActive)+Number(data.NeededCal.Sedentary))/2).toString())
@@ -173,6 +181,7 @@ var User=firebase.auth().currentUser;
 var path=firebase.database().ref('User').child(User['uid']).child('personalInfo')
 path.on('value',dataSnap=>{
   if(dataSnap.val()['Aadhar']){
+    console.warn(dataSnap.val())
     this.setState({AadharNo:dataSnap.val()['Aadhar'],hasAadhar:true,Name:dataSnap.val()['Name']})
   }
   else{
@@ -209,6 +218,14 @@ path.on('value',dataSnap=>{
         <Text style={{fontSize:wp("5%")}} onPress={()=>{
             Gfit.isAuthorized()
         }}>Google-Fit</Text>
+<Switch style={{marginLeft:wp("50%")}} value={this.state.isAuthrised} onChange={()=>{
+  if(this.state.isAuthrised){
+    GoogleFit.unsubscribeListeners();
+  }
+  else{
+    Gfit.isAuthorized()
+  }
+}}  />
           </View>
          <ScrollView style={{flex:1}}>
           <ActivityTile title={'Medicine Reminders'} Icon={<Ficon name='pills' color='#1285EA' size={wp("7%")} />}
