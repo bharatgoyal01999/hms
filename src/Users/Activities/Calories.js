@@ -38,7 +38,7 @@ export default ()=>{
                     if(vall){
                     var cal=0
                     vall.forEach(item=>{
-                            cal=cal+item['Calories']
+                            cal=cal+(item['Calories']/item['Servings'])
                            
                     })
                     cal= cal.toPrecision([4])
@@ -60,7 +60,7 @@ export default ()=>{
                         console.log(val)
                     var cal=0
                     val.forEach(item=>{
-                            cal=cal+item['Calories']
+                            cal=cal+(item['Calories']/item['Servings'])
                            
                     })
                     cal= cal.toPrecision([4])
@@ -96,6 +96,7 @@ export default ()=>{
                 
                 var data={}
                 data['Name']=item['recipe']['label']
+                data['Servings']=item['recipe']['yield']
                 data['Image']=item['recipe']['image']
                data['Cautions']= item['recipe']['cautioms']
                 data['Calories']=item['recipe']['calories']
@@ -132,7 +133,7 @@ export default ()=>{
             setTodaySelectedItem(todaySelectedItem);
             JSON.stringify(todaySelectedItem)
             AsyncStorage.setItem("TodaySelectedItem",JSON.stringify(todaySelectedItem))
-            var cal=Number(addedCalories)+Number(item['Calories']);
+            var cal=Number(addedCalories)+Number(item['Calories'])/Number(item['Servings']);
             console.log(cal)
             UpdateAddedCalories(cal)
             setVisibleSearch(false)
@@ -164,7 +165,7 @@ const removeFromList=(item)=>{
        
         JSON.stringify(updatedItems)
         AsyncStorage.setItem("TodaySelectedItem",JSON.stringify(updatedItems))
-        var cal=Number(addedCalories)-Number(item['Calories']);
+        var cal=Number(addedCalories)-Number(item['Calories'])/Number(item['Servings']);
         cal<1 ? cal=0 : cal=cal;
         console.log(cal)
         UpdateAddedCalories(cal)
@@ -226,7 +227,7 @@ const removeFromList=(item)=>{
 
         <Text style={{color:'white',fontSize:wp("4%"),margin:2}} > {item['Name']}</Text>
 
-       <Text style={{color:'white',fontSize:wp("3%"),}}>{'Calories: '+item['Calories'].toString().slice(0,6)}</Text>
+       <Text style={{color:'white',fontSize:wp("3%"),}}>{'Calories: '+(item['Calories']/item['Servings']).toString().slice(0,6)}</Text>
        <Text style={{color:'white',fontSize:wp("3%"),}}>{'Calcium: '+item['Nutritions']["Calcium"].toString().slice(0,6)+'g'}</Text>
        <Text style={{color:'white',fontSize:wp("3%"),}}>{'Carbs: '+item['Nutritions']["Carbs"].toString().slice(0,6)+'g'}</Text>
        <Text style={{color:'white',fontSize:wp("3%"),}}>{'Fat: '+item['Nutritions']["Fat"].toString().slice(0,6)+'g'}</Text>

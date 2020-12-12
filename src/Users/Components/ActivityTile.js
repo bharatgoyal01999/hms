@@ -2,14 +2,16 @@ import React from 'react'
 import {View,Text,TouchableOpacity,StyleSheet} from 'react-native'
 import { heightPercentageToDP, widthPercentageToDP } from 'react-native-responsive-screen';
 
-export default  ({title,Icon,onTouch})=>{
+export default  ({title,Icon,onTouch,data})=>{
     return(
         <TouchableOpacity style={styles.MainTile} onPress={()=>{
            onTouch();
         }} >
         <View style={{marginLeft:widthPercentageToDP("2%")}}>{Icon}</View>    
 <Text style={{marginLeft:widthPercentageToDP("3%"),fontSize:widthPercentageToDP("5%")}}>{title}</Text>
+<Text style={{fontSize:widthPercentageToDP("5%"),marginLeft:widthPercentageToDP("40%")}}>{data}</Text>
         </TouchableOpacity>
+
     );
 }
 

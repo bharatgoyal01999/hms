@@ -48,7 +48,7 @@ render(){
             <View style={{flex:0.15, 
                
                 alignItems:'center',justifyContent:'center',backgroundColor:Color.backgroundBlue}}>
-    <Text style={{fontSize:widthPercentageToDP("7%"), color:'white'}}>{this.props.Name.split(' ')[0]+"'s Medical History"}</Text>
+    <Text style={{fontSize:widthPercentageToDP("7%"), color:'white'}}>{'Bharat'+"'s Medical History"}</Text>
             </View>
            
     {  this.state.loading ? <ActivityIndicator color={'blue'} size={9} /> : 

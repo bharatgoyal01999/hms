@@ -42,7 +42,7 @@ export default class App extends React.Component {
          fcmService.register(onRegister, onNotification, onOpenNotification)
         localNotificationService.configure(onOpenNotification)
      
-        // localNotificationService.showNotification(1,'helooo', '6666')
+        // localNotificationService.showNotification(1,'Time to take medicine', 'Take your paracitamol')
         function onRegister(token) {
             console.log("[App] onRegister: ",token)
         }

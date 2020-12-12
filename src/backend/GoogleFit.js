@@ -4,7 +4,7 @@ const GoogleApiClientId = "311096852390-hrc5n7d8k8h0es8f7h5ljtjnvgpmhh5b.apps.go
 
 
 
-export function isAuthorized  () {
+export async function isAuthorized  () {
   console.log(Scopes)
   var options = {
     scopes: [
@@ -13,7 +13,7 @@ export function isAuthorized  () {
     ]
   }
   try{
-      GoogleFit.authorize(options)
+    await   GoogleFit.authorize(options)
         .then(authResult => {
           console.log(authResult)
           if (authResult.success) {

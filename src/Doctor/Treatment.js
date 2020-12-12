@@ -3,7 +3,7 @@ import {View,ScrollView,TouchableOpacity, Modal,Image,Button} from 'react-native
 import Colors from  '../../Theme/Color'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
-import Micon from 'react-native-vector-icons/MaterialCommunityIcons'
+import Micon from 'react-native-vector-icons/Fontisto'
 import {Text} from 'react-native-elements'
 import * as firebase from 'firebase'
 import { Container, Header, Content, Form, Item, Input, Label , Textarea} from 'native-base';
@@ -118,9 +118,9 @@ componentDidMount=async ()=>{
         //     }
           
         
-        //setTimeout(()=>{
-          //  this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
-        //},2000)
+        setTimeout(()=>{
+           this.setState({Temp:'97.5 F', HeartRate: '75 bpm', Bp:'90/60mmHg',loding:false})
+        },2000)
     }
 
 
@@ -291,7 +291,7 @@ addPatientInfo=()=>{
 
             <Item >
                 
-            <Micon size={20} name='blood-bag' color={'purple'} />
+            <Micon size={20} name='blood' color={'purple'} />
            
             <Input  placeholder={'Blood Pressure'} value={this.state.Bp}/>
 

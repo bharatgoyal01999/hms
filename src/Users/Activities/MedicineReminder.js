@@ -4,7 +4,8 @@ import {View,ScrollView, Text, Modal,StyleSheet,TouchableOpacity,TextInput,Butto
 
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {widthPercentageToDP as wp , heightPercentageToDP as hp} from 'react-native-responsive-screen'
-import Mcon from 'react-native-vector-icons/Ionicons'
+import Mcon from 'react-native-vector-icons/AntDesign'
+import Fcon from 'react-native-vector-icons/Feather'
 const ThemeColor='#1285EA';
 const ReminderTile=({rem,deletItem})=>{
     return (
@@ -22,7 +23,7 @@ const ReminderTile=({rem,deletItem})=>{
         padding:wp("2%")
         }}>
             <View style={{flexDirection:'row',alignItems:'center'}}>
-<Mcon name='watch' color={ThemeColor} size={wp("10%")} />
+<Fcon name='watch' color={ThemeColor} size={wp("10%")} />
     <Text style={styles.Tile}>{rem.Title}</Text></View>
         
         <View>

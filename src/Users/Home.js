@@ -4,8 +4,7 @@ import {View,Image,ScrollView,Modal,StyleSheet,TouchableOpacity,Switch} from 're
 
 import Micon from 'react-native-vector-icons/MaterialIcons'
 import Ficon from 'react-native-vector-icons/FontAwesome5'
-import Mcon from 'react-native-vector-icons/MaterialCommunityIcons'
-import Icons from 'react-native-vector-icons/Ionicons'
+
 import { Avatar, Accessory ,Text} from 'react-native-elements';
 import Colors from '../../Theme/Color'
 import ActivityTile from './Components/ActivityTile'
@@ -39,6 +38,9 @@ export default class HeaderIconExample extends Component {
     GoogleFitData:{},
   }
   componentDidMount=async ()=>{
+    await fetch('http://192.168.0.13:1234/getUrlTing').then(response=>{
+       console.log(response)
+     }).catch(err=>console.log(err))
     GoogleFit.checkIsAuthorized().then(() => {
       console.log(GoogleFit.isAuthorized)
       this.setState({isAuthorized:GoogleFit.isAuthorized}) // Then you can simply refer to `GoogleFit.isAuthorized` boolean.
@@ -57,6 +59,7 @@ export default class HeaderIconExample extends Component {
     console.log(UID)
     const path_ref=firebase.database().ref("User").child(UID).child("personalInfo");
     path_ref.on("value",dataSnap=>{
+      if(dataSnap.val()){
       var data=dataSnap.val();
       console.log(dataSnap.val())
     
@@ -74,7 +77,7 @@ export default class HeaderIconExample extends Component {
       AsyncStorage.setItem("ExpectedWeight",dataSnap.val().expectedWeight.toString())
       this.setState({
         name:dataSnap.val().Name
-      })
+      })}
     })
     this.checkAadhar();
   }
@@ -177,7 +180,7 @@ else{
 
 
 checkAadhar=async ()=>{
-var User=firebase.auth().currentUser;
+var User=await firebase.auth().currentUser;
 var path=firebase.database().ref('User').child(User['uid']).child('personalInfo')
 path.on('value',dataSnap=>{
   if(dataSnap.val()['Aadhar']){
@@ -218,7 +221,7 @@ path.on('value',dataSnap=>{
         <Text style={{fontSize:wp("5%")}} onPress={()=>{
             Gfit.isAuthorized()
         }}>Google-Fit</Text>
-<Switch style={{marginLeft:wp("50%")}} value={this.state.isAuthrised} onChange={()=>{
+<Switch style={{marginLeft:wp("50%")}} value={this.state.isAuthrised} onChange={async ()=>{
   if(this.state.isAuthrised){
     GoogleFit.unsubscribeListeners();
   }
@@ -228,19 +231,19 @@ path.on('value',dataSnap=>{
 }}  />
           </View>
          <ScrollView style={{flex:1}}>
-          <ActivityTile title={'Medicine Reminders'} Icon={<Ficon name='pills' color='#1285EA' size={wp("7%")} />}
+          <ActivityTile title={'Medicine Reminders'} Icon={<Ficon name='pills' color='#1285EA' size={wp("7%")} data="" />}
              onTouch={()=>{Actions.MR()}}
           />
-          <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")}/>}
+          <ActivityTile title={'calories gain'} Icon={<Ficon name='fire' color='#F56E04' size={wp("7%")} />}
        onTouch={()=>Actions.CaloryCounter()}
-          
+          data=""
           />
-          <ActivityTile title={'calories burn'} Icon={<Ficon name='fire' color={'#F52104'} size={wp("7%")}/>}/>
-          <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>}/>
-          <ActivityTile title={'sleep'} Icon={<Mcon name='sleep' color={'purple'} size={wp("7%")}/>}/>
+          <ActivityTile title={'calories burn'} Icon={<Ficon name='fire' color={'#F52104'} size={wp("7%")}/>} onTouch={()=>{console.log("rr")}}  data={''} />
+          <ActivityTile title={'walked-step'} Icon={<Ficon name='walking' color={'#379026'} size={wp("7%")}/>} onTouch={()=>{console.log("rr")}} data={""}/>
+          <ActivityTile title={'sleep'} Icon={<Ficon name='moon' color={'purple'} size={wp("7%")}/>} onTouch={()=>{console.log("rr")}} data={""}/>
           <ActivityTile title={'Weight Log'} Icon={<Ficon name='weight' color={'#FB03B0'} size={wp("7%")}/>} onTouch={()=>{
             Actions.WeightLogs()
-          }} />
+          }}  data=''/>
           </ScrollView>
         <Modal visible={this.state.ShowHistoryPage}  onRequestClose={()=>this.setState({ShowHistoryPage:false})}>
 <MedicalHistory AadharNumber={this.state.AadharNo} Name={this.state.Name}/>
